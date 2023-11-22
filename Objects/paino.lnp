@@ -1,0 +1,3 @@
+".\Objects\paino_adv.obj" 
+TO ".\Objects\paino" 
+PRINT(".\Listings\paino.m51") RAMSIZE(256) 
