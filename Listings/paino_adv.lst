@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     1
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
   00A9          +1    55     SADDR0   DATA  0A9H   ; SERIAL PORT 0 SLAVE ADDRESS
   00AA          +1    56     ADC1CN  DATA  0AAH   ; ADC 1 CONTROL
   00AB          +1    57     ADC1CF   DATA  0ABH   ; ADC 1 ANALOG MUX CONFIGURATION
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     2
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     2
 
   00AC          +1    58     AMX1SL   DATA  0ACH   ; ADC 1 ANALOG MUX CHANNEL SELECT
   00AD          +1    59     P3IF     DATA  0ADH   ; PORT 3 EXTERNAL INTERRUPT FLAGS
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
   00EF          +1   121     RSTSRC   DATA  0EFH   ; RESET SOURCE 
   00F0          +1   122     B        DATA  0F0H   ; B REGISTER
   00F1          +1   123     SCON1    DATA  0F1H   ; SERIAL PORT 1 CONTROL
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     3
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     3
 
   00F2          +1   124     SBUF1    DATA  0F2H   ; SERAIL PORT 1 DATA
   00F3          +1   125     SADDR1   DATA  0F3H   ; SERAIL PORT 1 
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
                 +1   187     ;
                 +1   188     ; T2CON C8H
   00C8          +1   189     CPRL2    BIT   T2CON.0 ; CAPTURE OR RELOAD SELECT
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     4
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     4
 
   00C9          +1   190     CT2      BIT   T2CON.1 ; TIMER OR COUNTER SELECT
   00CA          +1   191     TR2      BIT   T2CON.2 ; TIMER 2 ON/OFF CONTROL
@@ -254,9 +254,9 @@ LOC  OBJ            LINE     SOURCE
 0000                 238     ORG 0000H       
 0000 020100          239     LJMP MAIN
 000B                 240     ORG 000BH
-000B 0201FB          241     LJMP T0_Proc
+000B 0202B1          241     LJMP T0_Proc
 001B                 242     ORG 001BH
-001B 02020D          243     LJMP T1_Proc
+001B 0202C3          243     LJMP T1_Proc
                      244             
 0100                 245     ORG 0100H
 0100                 246     MAIN:
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
   0000               253             CLR_LCD_SIG BIT 00H             ;ÇåÁã±êÖ¾Î»
   0001               254             PAUSE_FLAG BIT 01H              ;ÔÝÍ£±êÖ¾Î»
   0002               255             MUSIC_FINSH BIT 02H             ;ÒôÀÖ²¥·ÅÍê³É±êÖ¾Î»
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     5
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     5
 
   0003               256             RECORING_SIG BIT 03H    ;Â¼Òô±êÖ¾Î»
   0004               257             BEAT_ON BIT 04H                 ;·äÃùÆ÷¹¤×÷±êÖ¾Î»
@@ -310,1035 +310,1250 @@ LOC  OBJ            LINE     SOURCE
 0114 75A000          292             MOV P2, #0
 0117 75B000          293             MOV P3, #0
                      294             
-011A 120413          295             LCALL Init_Device
+011A 1204E0          295             LCALL Init_Device
                      296     
-011D                 297     ININ_LCD_:
+011D                 297     ININ_LCD:
 011D 75A000          298             MOV P2,#0
 0120 75A0FF          299             MOV P2,#0ffh
 0123 75A01F          300             MOV P2,#1fh
-0126 31C5            301             ACALL LCD_CLR;Çå³ÆÁÄ»
+0126 517B            301             ACALL LCD_CLR;Çå³ÆÁÄ»
 0128 758038          302             MOV P0,#38H;8Î»µãÕó·½Ê½
-012B 31BA            303             ACALL ENABLE
+012B 5170            303             ACALL ENABLE
 012D 75800C          304             MOV P0,#0CH;¿ªÏÔÊ¾
-0130 31BA            305             ACALL ENABLE
+0130 5170            305             ACALL ENABLE
 0132 758006          306             MOV P0,#06H;×Ô¶¯ÒÆ¶¯¹â±ê
-0135 31BA            307             ACALL ENABLE
-0137 758080          308             MOV P0,#80H;ÉèÖÃÊ¾ÝÖ¸ÕëÆðµã
-013A 31BA            309             ACALL ENABLE
-                     310             
-013C                 311     MAIN_LOOP:
-013C 3140            312             ACALL LCD_DISPLAY
-013E 80FC            313             JMP MAIN_LOOP
-                     314             
-0140                 315     LCD_DISPLAY:;Ö¸¶¨Îª¹¤×÷Çø0¼Ä´æÆ÷ÓÃÓÚLCDÏÔÊ¾
-0140 C2D4            316             CLR RS1
-0142 C2D3            317             CLR RS0
-                     318             
-0144 20007E          319             JB CLR_LCD_SIG, LCD_CLR ;ÅÐ¶ÏÊÇ·ñÐèÒªÇåÆÁ
-0147 E522            320             MOV A, PAINO_MODE
-0149 B40115          321             CJNE A, #01H, LCD_MUSIC
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     6
+0135 5170            307             ACALL ENABLE
+0137 5102            308             ACALL LCD_DIY_INIT;×Ô¶¨Òå×Ö·û
+0139 5170            309             ACALL ENABLE
+013B 758080          310             MOV P0,#80H;ÉèÖÃÊ¾ÝÖ¸ÕëÆðµã
+013E 5170            311             ACALL ENABLE
+                     312             
+0140                 313     MAIN_LOOP:
+0140 3144            314             ACALL LCD_DISPLAY
+0142 80FC            315             JMP MAIN_LOOP
+                     316             
+0144                 317     LCD_DISPLAY:;Ö¸¶¨Îª¹¤×÷Çø0¼Ä´æÆ÷ÓÃÓÚLCDÏÔÊ¾
+0144 C2D4            318             CLR RS1
+0146 C2D3            319             CLR RS0
+                     320             
+0148 20003F          321             JB CLR_LCD_SIG, LCD_CLR_TEMP    ;ÅÐ¶ÏÊÇ·ñÐèÒªÇåÆÁ
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     6
 
-                     322             
-014C                 323     LCD_PLAY:;µ¯×àÄ£Ê½ÏÔÊ¾
-014C                 324     LCD_PLAY_ROW1:
-014C 900465          325             MOV DPTR,#PLAY_SCREEN1
-014F 758080          326             MOV P0,#080h;µÚÒ»ÐÐµÄÎ»ÖÃ
-0152 31BA            327             CALL ENABLE
-0154 31CD            328             CALL LCD_WRITE
-                     329             
-0156                 330     LCD_PLAY_ROW2:
-0156 900476          331             MOV DPTR,#PLAY_SCREEN2
-0159 7580C0          332             MOV P0,#0C0h;µÚ¶þÐÐµÄÎ»ÖÃ
-015C 31BA            333             CALL ENABLE
-015E 31CD            334             CALL LCD_WRITE
-0160 22              335             RET
-                     336             
-                     337             
-0161                 338     LCD_MUSIC:      ;ÒôÀÖ²¥·ÅÄ£Ê½
-0161 B4022B          339             CJNE A, #02H, LCD_RECORD
-0164                 340     LCD_ROW1:
-0164 90047C          341             MOV DPTR,#MUSIC_MODE1
-0167 758080          342             MOV P0,#080h;µÚÒ»ÐÐµÄÎ»ÖÃ
-016A 31BA            343             CALL ENABLE
-016C 31CD            344             CALL LCD_WRITE
-016E                 345     LCD_ROW2:
-016E E537            346             MOV A, SONG_ORDER
-0170                 347     LCD_NAME0:
-0170 B40005          348             CJNE A, #0, LCD_NAME1
-0173 90048C          349             MOV DPTR,#MUSIC_NAME0
-0176 2185            350             AJMP LCD_DISPLAY_NAME
-0178                 351     LCD_NAME1:
-0178 B40105          352             CJNE A, #1, LCD_NAME2
-017B 900494          353             MOV DPTR,#MUSIC_NAME1
-017E 2185            354             AJMP LCD_DISPLAY_NAME
-0180                 355     LCD_NAME2:
-0180 90049A          356             MOV DPTR,#MUSIC_NAME2
-0183 2185            357             AJMP LCD_DISPLAY_NAME
-0185                 358     LCD_DISPLAY_NAME:
-0185 7580C6          359             MOV P0,#0C6h;µÚ¶þÐÐµÄÎ»ÖÃ
-0188 31BA            360             CALL ENABLE
-018A 31CD            361             CALL LCD_WRITE
-018C 31A8            362             CALL LCD_TIME_DP
-018E 22              363             RET
-                     364     
-                     365     
-018F                 366     LCD_RECORD:     ;Â¼×àÄ£Ê½
-018F                 367     LCD_RECORDING_R0W1:
-018F 30030C          368             JNB RECORING_SIG, LCD_RECORDED_ROW1
-0192 9004A0          369             MOV DPTR,#RECORD_SCREEN1
-0195 758080          370             MOV P0,#080h;µÚÒ»ÐÐµÄÎ»ÖÃ
-0198 31BA            371             CALL ENABLE
-019A 31CD            372             CALL LCD_WRITE
-019C 21A8            373             AJMP LCD_TIME_DP
-                     374             
-019E                 375     LCD_RECORDED_ROW1:
-019E 9004AD          376             MOV DPTR,#RECORD_SCREEN2
-01A1 758080          377             MOV P0,#080h;µÚÒ»ÐÐµÄÎ»ÖÃ
-01A4 31BA            378             CALL ENABLE
-01A6 31CD            379             CALL LCD_WRITE
-01A8                 380     LCD_TIME_DP:
-01A8 7580C0          381             MOV P0,#0C0h;µÚ¶þÐÐµÄÎ»ÖÃ
-01AB 31BA            382             CALL ENABLE
-01AD AB35            383             MOV R3, TIME_H
-01AF 31E5            384             CALL LCD_WRITE_NUM
-01B1 743A            385             MOV A, #3AH     ; Ã°ºÅµÄascII
-01B3 31D8            386             CALL WRITE_IN
-01B5 AB36            387             MOV R3, TIME_L
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     7
+014B E522            322             MOV A, PAINO_MODE
+014D B4013C          323             CJNE A, #01H, LCD_MUSIC_TEMP
+                     324             
+0150                 325     LCD_PLAY:;µ¯×àÄ£Ê½ÏÔÊ¾
+0150                 326     LCD_PLAY_ROW1:
+0150 900532          327             MOV DPTR,#PLAY_SCREEN1
+0153 758080          328             MOV P0,#080H;µÚÒ»ÐÐµÄÎ»ÖÃ
+0156 5170            329             CALL ENABLE
+0158 5183            330             CALL LCD_WRITE
+                     331             
+015A                 332     LCD_PLAY_ROW2:
+015A 90053C          333             MOV DPTR,#PLAY_SCREEN2
+015D 7580C0          334             MOV P0,#0C0H;µÚ¶þÐÐµÄÎ»ÖÃ
+0160 5170            335             CALL ENABLE
+0162 5183            336             CALL LCD_WRITE
+0164 7580C6          337             MOV P0,#0C6H;
+0167 5170            338             CALL ENABLE
+                     339             
+0169 E539            340             MOV A, BEAT_STORE
+016B B4F006          341             CJNE A, #0F0H, JIANG_DISPLAY
+016E 75F00C          342             MOV B, #12
+0171 218E            343             AJMP BEAT_DISPLAY
+0173 22              344             RET
+                     345             
+0174                 346     JIANG_DISPLAY:
+0174 75F00C          347             MOV B, #12
+0177 84              348             DIV AB
+0178 B40006          349             CJNE A, #0,SHENG_DISPLAY
+017B 7402            350             MOV A, #2
+017D 518E            351             CALL WRITE_IN
+017F 218E            352             AJMP BEAT_DISPLAY
+0181                 353     SHENG_DISPLAY:
+0181 B4020A          354             CJNE A, #2,BEAT_DISPLAY
+0184 7401            355             MOV A, #1
+0186 518E            356             CALL WRITE_IN
+0188 218E            357             AJMP BEAT_DISPLAY
+                     358     
+018A                 359     LCD_CLR_TEMP:;ÖÐ¼Ì
+018A 417B            360             AJMP LCD_CLR
+018C                 361     LCD_MUSIC_TEMP:
+018C 4117            362             AJMP LCD_MUSIC
+                     363             
+018E                 364     BEAT_DISPLAY:
+018E E5F0            365             MOV A, B
+0190                 366     B12:
+0190 B40C06          367             CJNE A, #12, B11
+0193 900573          368             MOV DPTR, #N12
+0196 5183            369             CALL LCD_WRITE
+0198 22              370             RET     
+0199                 371     B11:
+0199 B40B06          372             CJNE A, #11, B10
+019C 90056F          373             MOV DPTR, #N11
+019F 5183            374             CALL LCD_WRITE
+01A1 22              375             RET
+01A2                 376     B10:
+01A2 B40A06          377             CJNE A, #10, B9
+01A5 90056B          378             MOV DPTR, #N10
+01A8 5183            379             CALL LCD_WRITE
+01AA 22              380             RET
+01AB                 381     B9:
+01AB B40906          382             CJNE A, #9, B8
+01AE 900567          383             MOV DPTR, #N9
+01B1 5183            384             CALL LCD_WRITE
+01B3 22              385             RET
+01B4                 386     B8:
+01B4 B40806          387             CJNE A, #8, B7
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     7
 
-01B7 31E5            388             CALL LCD_WRITE_NUM
-01B9 22              389             RET
-                     390     
-                     391     
-01BA                 392     ENABLE:;ÊäÈëÖ¸Áî
-01BA C2A3            393             CLR RS
-01BC C2A4            394             CLR RW
-01BE C2A5            395             CLR E
-01C0 31F5            396             ACALL DELAY
-01C2 D2A5            397             SETB E
-01C4 22              398             RET
-                     399        
-01C5                 400     LCD_CLR:;Çå³ÆÁÄ»
-01C5 C200            401             CLR CLR_LCD_SIG
-01C7 758001          402             MOV P0,#01H
-01CA 31BA            403             ACALL ENABLE
-01CC 22              404             RET
-                     405        
-01CD                 406     LCD_WRITE: ;Ð´Ê¾Ý
-01CD 7A00            407         MOV R2,#00h
-01CF                 408     READ_DATA:
-01CF EA              409         MOV A,R2
-01D0 93              410         MOVC A,@A+DPTR
-01D1 31D8            411         CALL WRITE_IN
-01D3 0A              412         INC R2
-01D4 B400F8          413         CJNE A,#00h, READ_DATA
-01D7 22              414         RET
-01D8                 415     WRITE_IN:
-01D8 F580            416             MOV P0,A
-01DA D2A3            417             SETB RS
-01DC C2A4            418             CLR RW
-01DE C2A5            419             CLR E
-01E0 31F5            420             CALL DELAY
-01E2 D2A5            421             SETB E
-01E4 22              422             RET
-                     423             
-01E5                 424     LCD_WRITE_NUM: ;Ð´Ê×Ö
-01E5 EB              425         MOV A, R3   ; R3ÓÃÓÚ´æ´¢±äÁ¿
-01E6                 426     READ_NUM:
-01E6 75F00A          427         MOV B, #10
-01E9 84              428             DIV AB
-01EA 2430            429             ADD A, #30H     ;×ª»»ÎªASCII
-01EC 31D8            430         CALL WRITE_IN
-01EE E5F0            431         MOV A, B
-01F0 2430            432             ADD A, #30H
-01F2 31D8            433             CALL WRITE_IN
-01F4 22              434         RET
-                     435     
-                     436             
-01F5                 437     DELAY:
-01F5 7F1E            438             MOV R7,#30
-01F7                 439      D1:
-01F7 DFFE            440             DJNZ R7,d1
-01F9 22              441             RET
+01B7 900563          388             MOV DPTR, #N8
+01BA 5183            389             CALL LCD_WRITE
+01BC 22              390             RET
+01BD                 391     B7:
+01BD B40706          392             CJNE A, #7, B6
+01C0 90055F          393             MOV DPTR, #N7
+01C3 5183            394             CALL LCD_WRITE
+01C5 22              395             RET
+01C6                 396     B6:
+01C6 B40606          397             CJNE A, #6, B5
+01C9 90055B          398             MOV DPTR, #N6
+01CC 5183            399             CALL LCD_WRITE
+01CE 22              400             RET
+01CF                 401     B5:
+01CF B40506          402             CJNE A, #5, B4
+01D2 900557          403             MOV DPTR, #N5
+01D5 5183            404             CALL LCD_WRITE
+01D7 22              405             RET
+01D8                 406     B4:
+01D8 B40406          407             CJNE A, #4, B3
+01DB 900553          408             MOV DPTR, #N4
+01DE 5183            409             CALL LCD_WRITE
+01E0 22              410             RET
+01E1                 411     B3:
+01E1 B40306          412             CJNE A, #3, B2
+01E4 90054F          413             MOV DPTR, #N3
+01E7 5183            414             CALL LCD_WRITE
+01E9 22              415             RET
+01EA                 416     B2:
+01EA B40206          417             CJNE A, #2, B1
+01ED 90054B          418             MOV DPTR, #N2
+01F0 5183            419             CALL LCD_WRITE
+01F2 22              420             RET
+01F3                 421     B1:
+01F3 B40106          422             CJNE A, #1, B0
+01F6 900547          423             MOV DPTR, #N1
+01F9 5183            424             CALL LCD_WRITE
+01FB 22              425             RET
+01FC                 426     B0:
+01FC 900543          427             MOV DPTR, #N0
+01FF 5183            428             CALL LCD_WRITE
+0201 22              429             RET
+                     430     
+0202                 431     LCD_DIY_INIT:
+0202 900580          432             MOV DPTR,#SHENG
+0205 758048          433             MOV P0,#48H
+0208 5170            434             CALL ENABLE
+020A 5183            435             CALL LCD_WRITE
+020C 900577          436             MOV DPTR,#JIANG
+020F 758050          437             MOV P0,#50H
+0212 5170            438             CALL ENABLE
+0214 5183            439             CALL LCD_WRITE
+0216 22              440             RET
+                     441             
                      442             
-01FA                 443     LCD_RT:
-01FA 22              444             RET
-                     445             
-                     446     ;=======================================================;
-                     447     ;¶¨Ê±Æ÷Ê¹ÓÃ
-01FB                 448     T0_Proc:        ;¸ºÔðÒôÀÖÊä³ö²¿·Ö
-                     449     ;R2¼ÇÂ¼µ±Ç°ÂÖÊ
-                     450     ;R3¼ÇÂ¼Éè¶¨µÄPWM
-01FB C0E0            451             PUSH ACC        ;±£»¤
-                     452     ;       PUSH PSW
-                     453     ;       SETB RS1
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     8
+0217                 443     LCD_MUSIC:      ;ÒôÀÖ²¥·ÅÄ£Ê½
+0217 B4022B          444             CJNE A, #02H, LCD_RECORD
+021A                 445     LCD_ROW1:
+021A 900589          446             MOV DPTR,#MUSIC_MODE1
+021D 758080          447             MOV P0,#080H;µÚÒ»ÐÐµÄÎ»ÖÃ
+0220 5170            448             CALL ENABLE
+0222 5183            449             CALL LCD_WRITE
+0224                 450     LCD_ROW2:
+0224 E537            451             MOV A, SONG_ORDER
+0226                 452     LCD_NAME0:
+0226 B40005          453             CJNE A, #0, LCD_NAME1
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     8
 
-                     454     ;       CLR RS0
-                     455             
-01FD 85318C          456             MOV  TH0, CURRENT_BEATS_H
-0200 85328A          457             MOV  TL0, CURRENT_BEATS_L
-0203 200402          458             JB BEAT_ON, OUT_CHANGE
-0206 410A            459             AJMP T0_RETI
-                     460             
-0208                 461     OUT_CHANGE:
-0208 B2A6            462             CPL BUZZER
-                     463             
-020A                 464     T0_RETI:
-                     465     ;       POP PSW
-020A D0E0            466             POP ACC
-020C 32              467             RETI
-                     468     ;-------------------------------------;
-020D                 469     T1_Proc:;       »ù´¡¶¨Ê±¼ÇÂ¼Îª10ms
-                     470     ;Ê¹ÓÃR4×÷ÎªÊ±¼ä±êÖ¾
-                     471     ;R5ÔÝ´æÒô·û
-                     472     ;Ê¹ÓÃ¼Ä´æÆ÷×é1
-020D C0E0            473             PUSH ACC        ;±£»¤
-020F C0D0            474             PUSH PSW
-0211 C082            475             PUSH DPL
-0213 C083            476             PUSH DPH
-0215 C2D4            477             CLR RS1
-0217 D2D3            478             SETB RS0
-0219 E4              479             CLR A
-                     480             
-021A 758DB1          481             MOV  TH1, #0B1H
-021D 758BDF          482             MOV  TL1, #0DFH
-                     483     
-0220                 484     T1_DELAY1:      ;¼üÅÌÉ¨ÃèÆµÂÊÉè¶¨20Hz
-0220 D53435          485             DJNZ DELAY_T1, TEMP_TO_RETI
-0223 753405          486             MOV DELAY_T1, #5
-0226 120301          487             LCALL KEY_CHECK
-                     488     
-0229                 489     T1_SET_BEATS: ;Éè¶¨µ±Ç°²¥·ÅµÄÒô·û
-0229 E522            490             MOV A, PAINO_MODE
-022B 20E006          491             JB ACC.0, T1_SB_PLAY_MODE
-022E 20E129          492             JB ACC.1, T1_SB_MUSIC_MODE
-0231 20E272          493             JB ACC.2, T1_SB_RECORD_MODE
-                     494     
-0234                 495     T1_SB_PLAY_MODE:
-0234 E539            496             MOV A, BEAT_STORE
-0236 FD              497             MOV R5, A
-0237                 498     SET_BEATS_0:            ;Òô·û×ªPWM
-0237 B4FF08          499             CJNE A, #0FFH, SET_BEATS_1      ;ÅÐ¶ÏÒôÀÖ½áÊø·û
-023A C204            500             CLR BEAT_ON
-023C C207            501             CLR RECORDED_PLAY
-023E D202            502             SETB MUSIC_FINSH
-0240 41D8            503             AJMP T1_TIME_COUNT
-0242                 504     SET_BEATS_1:
-0242 B4F004          505             CJNE A, #0F0H, SET_BEATS        ;ÅÐ¶Ï¿Õ×ªÒô·û
-0245 C204            506             CLR BEAT_ON
-0247 41D8            507             AJMP T1_TIME_COUNT
-0249                 508     SET_BEATS:      
-0249 90041D          509             MOV DPTR, #NOTE_H
-024C 93              510             MOVC A, @A+DPTR
-024D F531            511             MOV CURRENT_BEATS_H, A
-024F ED              512             MOV A, R5
-0250 900441          513             MOV DPTR, #NOTE_L
-0253 93              514             MOVC A, @A+DPTR
-0254 F532            515             MOV CURRENT_BEATS_L, A
-0256 41D8            516             AJMP T1_TIME_COUNT
-                     517     
-0258                 518     TEMP_TO_RETI:   ;ÖÐ¼ÌÎÀÐÇ
-0258 41F8            519             AJMP T1_RETI
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE     9
+0229 900596          454             MOV DPTR,#MUSIC_NAME0
+022C 413B            455             AJMP LCD_DISPLAY_NAME
+022E                 456     LCD_NAME1:
+022E B40105          457             CJNE A, #1, LCD_NAME2
+0231 90059E          458             MOV DPTR,#MUSIC_NAME1
+0234 413B            459             AJMP LCD_DISPLAY_NAME
+0236                 460     LCD_NAME2:
+0236 9005A4          461             MOV DPTR,#MUSIC_NAME2
+0239 413B            462             AJMP LCD_DISPLAY_NAME
+023B                 463     LCD_DISPLAY_NAME:
+023B 7580C6          464             MOV P0,#0C6H;µÚ¶þÐÐµÄÎ»ÖÃ
+023E 5170            465             CALL ENABLE
+0240 5183            466             CALL LCD_WRITE
+0242 515E            467             CALL LCD_TIME_DP
+0244 22              468             RET
+                     469     
+                     470     
+0245                 471     LCD_RECORD:     ;Â¼×àÄ£Ê½
+0245                 472     LCD_RECORDING_R0W1:
+0245 30030C          473             JNB RECORING_SIG, LCD_RECORDED_ROW1
+0248 9005AA          474             MOV DPTR,#RECORD_SCREEN1
+024B 758080          475             MOV P0,#080H;µÚÒ»ÐÐµÄÎ»ÖÃ
+024E 5170            476             CALL ENABLE
+0250 5183            477             CALL LCD_WRITE
+0252 415E            478             AJMP LCD_TIME_DP
+                     479             
+0254                 480     LCD_RECORDED_ROW1:
+0254 9005B7          481             MOV DPTR,#RECORD_SCREEN2
+0257 758080          482             MOV P0,#080H;µÚÒ»ÐÐµÄÎ»ÖÃ
+025A 5170            483             CALL ENABLE
+025C 5183            484             CALL LCD_WRITE
+025E                 485     LCD_TIME_DP:
+025E 7580C0          486             MOV P0,#0C0H;µÚ¶þÐÐµÄÎ»ÖÃ
+0261 5170            487             CALL ENABLE
+0263 AB35            488             MOV R3, TIME_H
+0265 519B            489             CALL LCD_WRITE_NUM
+0267 743A            490             MOV A, #3AH     ; Ã°ºÅµÄascII
+0269 518E            491             CALL WRITE_IN
+026B AB36            492             MOV R3, TIME_L
+026D 519B            493             CALL LCD_WRITE_NUM
+026F 22              494             RET
+                     495     
+                     496     
+0270                 497     ENABLE:;ÊäÈëÖ¸Áî
+0270 C2A3            498             CLR RS
+0272 C2A4            499             CLR RW
+0274 C2A5            500             CLR E
+0276 51AB            501             ACALL DELAY
+0278 D2A5            502             SETB E
+027A 22              503             RET
+                     504        
+027B                 505     LCD_CLR:;Çå³ÆÁÄ»
+027B C200            506             CLR CLR_LCD_SIG
+027D 758001          507             MOV P0,#01H
+0280 5170            508             ACALL ENABLE
+0282 22              509             RET
+                     510        
+0283                 511     LCD_WRITE: ;Ð´Ê¾Ý
+0283 7A00            512         MOV R2,#00h
+0285                 513     READ_DATA:
+0285 EA              514         MOV A,R2
+0286 93              515         MOVC A,@A+DPTR
+0287 518E            516         CALL WRITE_IN
+0289 0A              517         INC R2
+028A B400F8          518         CJNE A,#00h, READ_DATA
+028D 22              519         RET
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE     9
 
-                     520     ;------------------------------ 
-025A                 521     T1_SB_MUSIC_MODE:
-025A 200245          522             JB MUSIC_FINSH, MUSIC_PAUSE     ;ÏÈÅÐ¶ÏÒôÀÖÊÇ·ñ²¥·ÅÍê³É
-025D 200142          523             JB PAUSE_FLAG, MUSIC_PAUSE      ;ÔÙÅÐ¶ÏÊÇ·ñÔÝÍ£
-0260 D204            524             SETB BEAT_ON
-0262 E537            525             MOV A, SONG_ORDER
-0264                 526     SONG0:
-0264 B40009          527             CJNE A, #0, SONG1
-0267 9004B5          528             MOV DPTR, #MUSIC_0
-026A 517F            529             ACALL SELECTED_MUSIC
-026C 519E            530             ACALL GET_BEATS_C
-026E 4137            531             AJMP SET_BEATS_0
-0270                 532     SONG1:
-0270 B40109          533             CJNE A, #1, SONG2
-0273 90051A          534             MOV DPTR, #MUSIC_1
-0276 517F            535             ACALL SELECTED_MUSIC
-0278 519E            536             ACALL GET_BEATS_C
-027A 4137            537             AJMP SET_BEATS_0
-027C                 538     SONG2:
-027C 900575          539             MOV DPTR, #MUSIC_2
-027F                 540     SELECTED_MUSIC: ;»ñÈ¡Òô·ûµÄµØÖ·µ½DPTR
-027F E536            541             MOV A, TIME_L
-0281 75F00A          542             MOV B, #10      ;¿ÉÒÔÉèÖÃÎª¿ì½ø
-0284 84              543             DIV AB
-0285 2582            544             ADD A, DPL
-0287 F582            545             MOV DPL, A
-                     546             
-0289 E535            547             MOV A, TIME_H
-028B 75F00A          548             MOV B, #10
-028E 84              549             DIV AB
-028F 3583            550             ADDC A, DPH
-0291 740A            551             MOV A, #10      ;100/10
-0293 A4              552             MUL AB
-0294 2582            553             ADD A, DPL
-0296 F582            554             MOV DPL, A
-0298 E4              555             CLR A
-0299 3583            556             ADDC A, DPH
-029B F583            557             MOV DPH, A      ;¼ÆËãÊ±¼ä+Ñ°Ö·Î»ÖÃ
-029D 22              558             RET
-                     559     
-029E                 560     GET_BEATS_C:;ÔÚ³ÌÐòROMÀïÃæ»ñÈ¡Òô·ûÊ¾Ý
-029E E4              561             CLR A
-029F 93              562             MOVC A, @A+DPTR
-02A0 FD              563             MOV R5, A       ;Òô·ûÔÝ´æÈëR5
-02A1 22              564             RET
+028E                 520     WRITE_IN:
+028E F580            521             MOV P0,A
+0290 D2A3            522             SETB RS
+0292 C2A4            523             CLR RW
+0294 C2A5            524             CLR E
+0296 51AB            525             CALL DELAY
+0298 D2A5            526             SETB E
+029A 22              527             RET
+                     528             
+029B                 529     LCD_WRITE_NUM: ;Ð´Ê×Ö
+029B EB              530         MOV A, R3   ; R3ÓÃÓÚ´æ´¢±äÁ¿
+029C                 531     READ_NUM:
+029C 75F00A          532         MOV B, #10
+029F 84              533             DIV AB
+02A0 2430            534             ADD A, #30H     ;×ª»»ÎªASCII
+02A2 518E            535         CALL WRITE_IN
+02A4 E5F0            536         MOV A, B
+02A6 2430            537             ADD A, #30H
+02A8 518E            538             CALL WRITE_IN
+02AA 22              539         RET
+                     540     
+                     541             
+02AB                 542     DELAY:
+02AB 7F1E            543             MOV R7,#30
+02AD                 544      D1:
+02AD DFFE            545             DJNZ R7,d1
+02AF 22              546             RET
+                     547             
+02B0                 548     LCD_RT:
+02B0 22              549             RET
+                     550             
+                     551     ;=======================================================;
+                     552     ;¶¨Ê±Æ÷Ê¹ÓÃ
+02B1                 553     T0_Proc:        ;¸ºÔðÒôÀÖÊä³ö²¿·Ö
+                     554     ;R2¼ÇÂ¼µ±Ç°ÂÖÊ
+                     555     ;R3¼ÇÂ¼Éè¶¨µÄPWM
+02B1 C0E0            556             PUSH ACC        ;±£»¤
+                     557     ;       PUSH PSW
+                     558     ;       SETB RS1
+                     559     ;       CLR RS0
+                     560             
+02B3 85318C          561             MOV  TH0, CURRENT_BEATS_H
+02B6 85328A          562             MOV  TL0, CURRENT_BEATS_L
+02B9 200402          563             JB BEAT_ON, OUT_CHANGE
+02BC 41C0            564             AJMP T0_RETI
                      565             
-02A2                 566     MUSIC_PAUSE:
-02A2 C204            567             CLR BEAT_ON
-02A4 4137            568             AJMP SET_BEATS_0
-                     569     ;-------------------------------
-02A6                 570     T1_SB_RECORD_MODE:
-02A6 300312          571             JNB RECORING_SIG, RECORDED      ;ÅÐ¶ÏÂ¼Òô»¹ÊÇÂ¼Òô²¥·Å
-02A9                 572     RECORDING:
-02A9 900000          573             MOV DPTR, #0    ;×¼±¸´æÈëÆ¬ÍâRAM
-02AC 517F            574             ACALL SELECTED_MUSIC
-02AE E539            575             MOV A, BEAT_STORE
-02B0 F0              576             MOVX @DPTR, A   ;´æÈë
-02B1 FD              577             MOV R5, A
-02B2 A3              578             INC DPTR        ;ÏÂÒ»Î»´æÈë½áÊøÎ»
-02B3 74FF            579             MOV A, #0FFH
-02B5 F0              580             MOVX @DPTR, A
-02B6 D204            581             SETB BEAT_ON
-02B8 ED              582             MOV A, R5
-02B9 4137            583             AJMP SET_BEATS_0        ;²¥·Å·´À¡
-                     584             
-02BB                 585     RECORDED:
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    10
+02BE                 566     OUT_CHANGE:
+02BE B2A6            567             CPL BUZZER
+                     568             
+02C0                 569     T0_RETI:
+                     570     ;       POP PSW
+02C0 D0E0            571             POP ACC
+02C2 32              572             RETI
+                     573     ;-------------------------------------;
+02C3                 574     T1_Proc:;       »ù´¡¶¨Ê±¼ÇÂ¼Îª10ms
+                     575     ;Ê¹ÓÃR4×÷ÎªÊ±¼ä±êÖ¾
+                     576     ;R5ÔÝ´æÒô·û
+                     577     ;Ê¹ÓÃ¼Ä´æÆ÷×é1
+02C3 C0E0            578             PUSH ACC        ;±£»¤
+02C5 C0D0            579             PUSH PSW
+02C7 C082            580             PUSH DPL
+02C9 C083            581             PUSH DPH
+02CB C2D4            582             CLR RS1
+02CD D2D3            583             SETB RS0
+02CF E4              584             CLR A
+                     585             
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    10
 
-02BB 200704          586             JB RECORDED_PLAY, RCD_PLAY
-02BE C204            587             CLR BEAT_ON
-02C0 41F8            588             AJMP T1_RETI
-                     589     
-02C2                 590     RCD_PLAY:
-02C2 900000          591             MOV DPTR, #0
-02C5 517F            592             ACALL SELECTED_MUSIC
-02C7 51CD            593             ACALL GET_BEATS_X
-02C9 D204            594             SETB BEAT_ON   
-02CB 4137            595             AJMP SET_BEATS_0
-                     596     
-02CD                 597     GET_BEATS_X:;ÔÚÆ¬ÄÚRAMÀïÃæ»ñÈ¡Òô·ûÊ¾Ý
-02CD E0              598             MOVX A, @DPTR
-02CE FD              599             MOV R5, A       ;Òô·ûÔÝ´æÈëR5
-02CF 22              600             RET
-                     601             
-                     602     ;-------------------------------
-02D0                 603     TT_RCD_JUDGE:   ;Â¼Òô¼ÆÊ±ÅÐ¶Ï
-02D0 20070B          604             JB RECORDED_PLAY, TT_C  ;Â¼ÒôµÄ²¥·Å¿ªÆô»òÕßÂ¼Òô¿ªÆôÊ±ºò¼ÆÊ±
-02D3 200308          605             JB RECORING_SIG, TT_C
-02D6 41F8            606             AJMP T1_RETI
-                     607             
-02D8                 608     T1_TIME_COUNT: ;¼ÆÊ±
-02D8 2012F5          609             JB RECORD_MODE, TT_RCD_JUDGE    ;Â¼ÒôÄ£Ê½ÏÂµÄÌØÅÐ
-02DB 20011A          610             JB PAUSE_FLAG, T1_RETI  ;ÅÐ¶ÏÊÇ·ñÔÝÍ£¹ÒÆð
-                     611             
-02DE                 612     TT_C:
-02DE E536            613             MOV A, TIME_L
-02E0 2405            614             ADD A, #5
-02E2 B4690B          615             CJNE A, #105, COUNT_PLUS_L      ; ÅÐ¶ÏÊÇ·ñ½øÎ»
-02E5 753600          616             MOV TIME_L, #0
-02E8 E535            617             MOV A, TIME_H
-02EA 04              618             INC A
-02EB B46406          619             CJNE A, #100, COUNT_PLUS_H      ; ÅÐ¶ÏÊÇ·ñMAX
-02EE 41F8            620             AJMP T1_RETI
-                     621     
-02F0                 622     COUNT_PLUS_L:
-02F0 F536            623             MOV TIME_L, A
-02F2 41F8            624             AJMP T1_RETI
-                     625             
-02F4                 626     COUNT_PLUS_H:
-02F4 F535            627             MOV TIME_H, A
-02F6 41F8            628             AJMP T1_RETI
-                     629             
-02F8                 630     T1_RETI:
-02F8 D083            631             POP DPH
-02FA D082            632             POP DPL
-02FC D0D0            633             POP PSW
-02FE D0E0            634             POP ACC
-0300 32              635             RETI
-                     636     
-                     637     ; ¼üÅÌ¶ÁÈ¡
-                     638     ; R1 ¼ÇÂ¼ A
-                     639     ; R2 P3É¨Ãè
-                     640     ; R3 É¨ÃèÂÖÊ*6
-0301                 641     KEY_CHECK:      
-0301                 642     KEY_GETNUM:             ;¿ªÊ¼¶ÁÈ¡Ê¾Ý
-0301 7AFE            643             MOV R2, #0FEH
-0303 7B00            644             MOV R3, #00H
+02D0 758DB1          586             MOV  TH1, #0B1H
+02D3 758BDF          587             MOV  TL1, #0DFH
+                     588     
+02D6                 589     T1_DELAY1:      ;¼üÅÌÉ¨ÃèÆµÂÊÉè¶¨20Hz
+02D6 D53435          590             DJNZ DELAY_T1, TEMP_TO_RETI
+02D9 753405          591             MOV DELAY_T1, #5
+02DC 1203CE          592             LCALL KEY_CHECK
+                     593     
+02DF                 594     T1_SET_BEATS: ;Éè¶¨µ±Ç°²¥·ÅµÄÒô·û
+02DF E522            595             MOV A, PAINO_MODE
+02E1 20E006          596             JB ACC.0, T1_SB_PLAY_MODE
+02E4 20E12B          597             JB ACC.1, T1_SB_MUSIC_MODE
+02E7 20E226          598             JB ACC.2, T1_SB_RECORD_MODE_TEMP
+                     599     
+02EA                 600     T1_SB_PLAY_MODE:
+02EA E539            601             MOV A, BEAT_STORE
+02EC FD              602             MOV R5, A
+02ED                 603     SET_BEATS_0:            ;Òô·û×ªPWM
+02ED B4FF08          604             CJNE A, #0FFH, SET_BEATS_1      ;ÅÐ¶ÏÒôÀÖ½áÊø·û
+02F0 C204            605             CLR BEAT_ON
+02F2 C207            606             CLR RECORDED_PLAY
+02F4 D202            607             SETB MUSIC_FINSH
+02F6 6190            608             AJMP T1_TIME_COUNT
+02F8                 609     SET_BEATS_1:
+02F8 B4F004          610             CJNE A, #0F0H, SET_BEATS        ;ÅÐ¶Ï¿Õ×ªÒô·û
+02FB C204            611             CLR BEAT_ON
+02FD 6190            612             AJMP T1_TIME_COUNT
+02FF                 613     SET_BEATS:      
+02FF 9004EA          614             MOV DPTR, #NOTE_H
+0302 93              615             MOVC A, @A+DPTR
+0303 F531            616             MOV CURRENT_BEATS_H, A
+0305 ED              617             MOV A, R5
+0306 90050E          618             MOV DPTR, #NOTE_L
+0309 93              619             MOVC A, @A+DPTR
+030A F532            620             MOV CURRENT_BEATS_L, A
+030C 6190            621             AJMP T1_TIME_COUNT
+                     622     
+030E                 623     TEMP_TO_RETI:   ;ÖÐ¼ÌÎÀÐÇ
+030E 61C5            624             AJMP T1_RETI
+0310                 625     T1_SB_RECORD_MODE_TEMP:
+0310 615E            626             AJMP T1_SB_RECORD_MODE
+                     627     ;------------------------------ 
+0312                 628     T1_SB_MUSIC_MODE:
+0312 200245          629             JB MUSIC_FINSH, MUSIC_PAUSE     ;ÏÈÅÐ¶ÏÒôÀÖÊÇ·ñ²¥·ÅÍê³É
+0315 200142          630             JB PAUSE_FLAG, MUSIC_PAUSE      ;ÔÙÅÐ¶ÏÊÇ·ñÔÝÍ£
+0318 D204            631             SETB BEAT_ON
+031A E537            632             MOV A, SONG_ORDER
+                     633     ; ÇúÄ¿Ñ¡È¡
+031C                 634     SONG0:
+031C B40005          635             CJNE A, #0, SONG1
+031F 9005BF          636             MOV DPTR, #MUSIC_0
+0322 6131            637             AJMP PLAYER_1X
+0324                 638     SONG1:
+0324 B40105          639             CJNE A, #1, SONG2
+0327 900624          640             MOV DPTR, #MUSIC_1
+032A 6131            641             AJMP PLAYER_1X
+032C                 642     SONG2:
+032C 90067F          643             MOV DPTR, #MUSIC_2
+032F 6131            644             AJMP PLAYER_1X
                      645             
-0305                 646     SCAN_START:
-0305 8AB0            647             MOV P3, R2      ;P3 É¨Ãè
-                     648     
-0307                 649     COL0:
-0307 209005          650             JB P1.0, COL1
-030A 7400            651             MOV A,#0
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    11
+                     646     ; ²¥·ÅËÙ¶ÈÑ¡È¡
+0331                 647     PLAYER_1X:
+0331 7137            648             ACALL SELECTED_MUSIC
+0333 7156            649             ACALL GET_BEATS_C
+0335 41ED            650             AJMP SET_BEATS_0
+                     651             
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    11
 
-030C 020337          652             LJMP CAL
-030F                 653     COL1:
-030F 209105          654             JB P1.1, COL2
-0312 7401            655             MOV A,#1
-0314 020337          656             LJMP CAL
-0317                 657     COL2:
-0317 209205          658             JB P1.2, COL3
-031A 7402            659             MOV A,#2
-031C 020337          660             LJMP CAL
-031F                 661     COL3:
-031F 209305          662             JB P1.3, COL4
-0322 7403            663             MOV A,#3
-0324 020337          664             LJMP CAL
-0327                 665     COL4:
-0327 209405          666             JB P1.4, COL5
-032A 7404            667             MOV A,#4
-032C 020337          668             LJMP CAL
-032F                 669     COL5:
-032F 209517          670             JB P1.5, KEY_P4
-0332 7405            671             MOV A,#5
-0334 020337          672             LJMP CAL
-                     673     
-0337                 674     CAL:;µÃ³ö°´¼üÎ»ÖÃ
-0337 2B              675             ADD A, R3
-0338 941D            676             SUBB A, #29
-033A 502E            677             JNC FUNCTION_SWITCH     ;ÅÐ¶Ï¹¦ÄÜ¼ü
-033C C3              678             CLR C
-033D 241D            679             ADD A, #29
-033F F539            680             MOV BEAT_STORE, A       ;´æÈëµ±Ç°Òô·û
-0341 301022          681             JNB PLAY_MODE, KEY_RT   ;ÅÐ¶ÏÊÇ·ñÎªµ¯×àÄ£Ê½
-0344 D204            682             SETB BEAT_ON ;¿ÉÒÔ²¥·Å
-0346 020366          683             LJMP KEY_RT
-                     684             
-0349                 685     KEY_P4:;Ò»ÐÐÉ¨Ãè½áÊø                    
-0349 EB              686             MOV A, R3
-034A 2406            687             ADD A, #6
-034C FB              688             MOV R3, A;      ´æÒ»ÐÐ
-034D EA              689             MOV A, R2
-034E 30E505          690             JNB ACC.5, NO_INPUT 
-0351 23              691             RL A
-0352 FA              692             MOV R2, A
-0353 020305          693             LJMP SCAN_START
-                     694     
-0356                 695     NO_INPUT:
-0356 201005          696             JB PLAY_MODE, FUN_FLAG_FALL
-0359 201202          697             JB RECORD_MODE, FUN_FLAG_FALL
-035C C204            698             CLR BEAT_ON ;²»¿ÉÒÔ²¥·Å
-035E                 699     FUN_FLAG_FALL:  ;¹¦ÄÜ¼üÈ¥¶¶¹ÒÆðÇå³
-035E 7539F0          700             MOV BEAT_STORE, #0F0H
-0361 20050E          701             JB FUNCTION_FLAG, FUNCTION
-0364 6166            702             AJMP KEY_RT
-                     703             
-0366                 704     KEY_RT:
-0366 75903F          705             MOV P1, #3FH
-0369 22              706             RET
-                     707             
-                     708     ;¹¦ÄÜ×ª»»
-036A                 709     FUNCTION_SWITCH:
-036A F530            710             MOV LAST_FUNCTION, A;
-036C D205            711             SETB FUNCTION_FLAG
-036E C204            712             CLR BEAT_ON ;²»¿ÉÒÔ²¥·Å
-0370 6166            713             AJMP KEY_RT
-                     714     
-0372                 715     FUNCTION:
-0372 C205            716             CLR FUNCTION_FLAG               ;Çå¿Õ¹ÒÆðµÄ¹¦ÄÜ¼ü·ûºÅ
-0374 E530            717             MOV A, LAST_FUNCTION    ;ÅÐ¶ÏÉÏÒ»¸ö°´ÏÂµÄ¹¦ÄÜ¼ü
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    12
+0337                 652     SELECTED_MUSIC: ;»ñÈ¡Òô·ûµÄµØÖ·µ½DPTR
+0337 E536            653             MOV A, TIME_L
+0339 75F00A          654             MOV B, #10      ;¿ÉÒÔÉèÖÃÎª¿ì½ø
+033C 84              655             DIV AB
+033D 2582            656             ADD A, DPL
+033F F582            657             MOV DPL, A
+                     658             
+0341 E535            659             MOV A, TIME_H
+0343 75F00A          660             MOV B, #10
+0346 84              661             DIV AB
+0347 3583            662             ADDC A, DPH
+0349 740A            663             MOV A, #10      ;100/10
+034B A4              664             MUL AB
+034C 2582            665             ADD A, DPL
+034E F582            666             MOV DPL, A
+0350 E4              667             CLR A
+0351 3583            668             ADDC A, DPH
+0353 F583            669             MOV DPH, A      ;¼ÆËãÊ±¼ä+Ñ°Ö·Î»ÖÃ
+0355 22              670             RET
+                     671     
+0356                 672     GET_BEATS_C:;ÔÚ³ÌÐòROMÀïÃæ»ñÈ¡Òô·ûÊ¾Ý
+0356 E4              673             CLR A
+0357 93              674             MOVC A, @A+DPTR
+0358 FD              675             MOV R5, A       ;Òô·ûÔÝ´æÈëR5
+0359 22              676             RET
+                     677             
+035A                 678     MUSIC_PAUSE:
+035A C204            679             CLR BEAT_ON
+035C 41ED            680             AJMP SET_BEATS_0
+                     681     ;-------------------------------
+035E                 682     T1_SB_RECORD_MODE:
+035E 300312          683             JNB RECORING_SIG, RECORDED      ;ÅÐ¶ÏÂ¼Òô»¹ÊÇÂ¼Òô²¥·Å
+0361                 684     RECORDING:
+0361 900000          685             MOV DPTR, #0    ;×¼±¸´æÈëÆ¬ÍâRAM
+0364 7137            686             ACALL SELECTED_MUSIC
+0366 E539            687             MOV A, BEAT_STORE
+0368 F0              688             MOVX @DPTR, A   ;´æÈë
+0369 FD              689             MOV R5, A
+036A A3              690             INC DPTR        ;ÏÂÒ»Î»´æÈë½áÊøÎ»
+036B 74FF            691             MOV A, #0FFH
+036D F0              692             MOVX @DPTR, A
+036E D204            693             SETB BEAT_ON
+0370 ED              694             MOV A, R5
+0371 41ED            695             AJMP SET_BEATS_0        ;²¥·Å·´À¡
+                     696             
+0373                 697     RECORDED:
+0373 200704          698             JB RECORDED_PLAY, RCD_PLAY
+0376 C204            699             CLR BEAT_ON
+0378 61C5            700             AJMP T1_RETI
+                     701     
+037A                 702     RCD_PLAY:
+037A 900000          703             MOV DPTR, #0
+037D 7137            704             ACALL SELECTED_MUSIC
+037F 7185            705             ACALL GET_BEATS_X
+0381 D204            706             SETB BEAT_ON   
+0383 41ED            707             AJMP SET_BEATS_0
+                     708     
+0385                 709     GET_BEATS_X:;ÔÚÆ¬ÄÚRAMÀïÃæ»ñÈ¡Òô·ûÊ¾Ý
+0385 E0              710             MOVX A, @DPTR
+0386 FD              711             MOV R5, A       ;Òô·ûÔÝ´æÈëR5
+0387 22              712             RET
+                     713             
+                     714     ;-------------------------------
+0388                 715     TT_RCD_JUDGE:   ;Â¼Òô¼ÆÊ±ÅÐ¶Ï
+0388 20070E          716             JB RECORDED_PLAY, TT_C  ;Â¼ÒôµÄ²¥·Å¿ªÆô»òÕßÂ¼Òô¿ªÆôÊ±ºò¼ÆÊ±
+038B 20030B          717             JB RECORING_SIG, TT_C
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    12
 
-0376 60EE            718             JZ KEY_RT
-0378 753000          719             MOV LAST_FUNCTION, #0
-037B B4041D          720             CJNE A, #4, OTHER_FUNCTION
-037E E522            721             MOV A, PAINO_MODE               ;Ä£Ê½ÇÐ»»
-0380 20E207          722             JB ACC.2, MODE_0
-0383 23              723             RL A
-0384 F522            724             MOV PAINO_MODE, A
-0386 7191            725             ACALL SWITCH_CLR        ;ÇåÀí±äÁ¿
-0388 6166            726             AJMP KEY_RT
-                     727             
-038A                 728     MODE_0:
-038A 752201          729             MOV PAINO_MODE, #1
-038D 7191            730             ACALL SWITCH_CLR
-038F 6166            731             AJMP KEY_RT
-                     732     
-0391                 733     SWITCH_CLR:     ;×ª»»Ä£Ê½Ê±ºòË³±ãÇå¿Õ±äÁ¿
-0391 753500          734             MOV TIME_H, #0
-0394 753600          735             MOV TIME_L, #0  
-0397 752001          736             MOV 20H, #1
-039A 22              737             RET
-                     738             
-039B                 739     OTHER_FUNCTION:
-039B D200            740             SETB CLR_LCD_SIG        ;ÇåÆÁLCD
-039D                 741     RECORD_KEY:     ;ÐÞ¸ÄÎªÂ¼Òô°´¼ü
-039D B40610          742             CJNE A, #6, SKIP_2X
-03A0 3012C3          743             JNB RECORD_MODE, KEY_RT ;½öÂ¼ÒôÄ£Ê½ÏÂÓÐÐ§
-03A3 B203            744             CPL RECORING_SIG
-03A5 753500          745             MOV TIME_H, #0
-03A8 753600          746             MOV TIME_L, #0  
-03AB 7539FF          747             MOV BEAT_STORE, #0FFH
-03AE 6166            748             AJMP KEY_RT
-                     749     
-03B0                 750     SKIP_2X:        ;¿ì½ø¹¦ÄÜ¼ü
-03B0 B40507          751             CJNE A, #5, NEXT_MUSIC
-03B3 2010B0          752             JB PLAY_MODE, KEY_RT
-03B6 B206            753             CPL SKIP_2X_FLAG
-03B8 6166            754             AJMP KEY_RT
-                     755             
-03BA                 756     NEXT_MUSIC:     ;Ê±¼ä´æ´¢»¹ÐèÒªÇåÁã
-03BA B40313          757             CJNE A, #3, LAST_MUSIC
-03BD 3011A6          758             JNB MUSIC_MODE, KEY_RT  ;½öÒôÀÖÄ£Ê½ÏÂÓÐÐ§
-03C0 E537            759             MOV A, SONG_ORDER
-03C2 9403            760             SUBB A, #3
-03C4 50A0            761             JNC KEY_RT
-03C6 C3              762             CLR C
-03C7 E537            763             MOV A, SONG_ORDER
-03C9 04              764             INC A
-03CA F537            765             MOV SONG_ORDER, A
-03CC 7191            766             ACALL SWITCH_CLR
-03CE 6166            767             AJMP KEY_RT
+038E 61C5            718             AJMP T1_RETI
+                     719             
+0390                 720     T1_TIME_COUNT: ;¼ÆÊ±
+0390 2012F5          721             JB RECORD_MODE, TT_RCD_JUDGE    ;Â¼ÒôÄ£Ê½ÏÂµÄÌØÅÐ
+0393 20012F          722             JB PAUSE_FLAG, T1_RETI  ;ÅÐ¶ÏÊÇ·ñÔÝÍ£¹ÒÆð
+0396 200612          723             JB SKIP_2X_FLAG, TT_C_2X
+                     724             
+0399                 725     TT_C:
+0399 E536            726             MOV A, TIME_L
+039B 2405            727             ADD A, #5
+039D B4691D          728             CJNE A, #105, COUNT_PLUS_L      ; ÅÐ¶ÏÊÇ·ñ½øÎ»
+03A0 753600          729             MOV TIME_L, #0
+03A3 E535            730             MOV A, TIME_H
+03A5 04              731             INC A
+03A6 B46418          732             CJNE A, #100, COUNT_PLUS_H      ; ÅÐ¶ÏÊÇ·ñMAX
+03A9 61C5            733             AJMP T1_RETI
+                     734     
+03AB                 735     TT_C_2X:
+03AB E536            736             MOV A, TIME_L
+03AD 240A            737             ADD A, #10
+03AF B46E0B          738             CJNE A, #110, COUNT_PLUS_L      ; ÅÐ¶ÏÊÇ·ñ½øÎ»
+03B2 753600          739             MOV TIME_L, #0
+03B5 E535            740             MOV A, TIME_H
+03B7 04              741             INC A
+03B8 B46406          742             CJNE A, #100, COUNT_PLUS_H      ; ÅÐ¶ÏÊÇ·ñMAX
+03BB 61C5            743             AJMP T1_RETI
+                     744     
+03BD                 745     COUNT_PLUS_L:
+03BD F536            746             MOV TIME_L, A
+03BF 61C5            747             AJMP T1_RETI
+                     748             
+03C1                 749     COUNT_PLUS_H:
+03C1 F535            750             MOV TIME_H, A
+03C3 61C5            751             AJMP T1_RETI
+                     752             
+03C5                 753     T1_RETI:
+03C5 D083            754             POP DPH
+03C7 D082            755             POP DPL
+03C9 D0D0            756             POP PSW
+03CB D0E0            757             POP ACC
+03CD 32              758             RETI
+                     759     
+                     760     ; ¼üÅÌ¶ÁÈ¡
+                     761     ; R1 ¼ÇÂ¼ A
+                     762     ; R2 P3É¨Ãè
+                     763     ; R3 É¨ÃèÂÖÊ*6
+03CE                 764     KEY_CHECK:      
+03CE                 765     KEY_GETNUM:             ;¿ªÊ¼¶ÁÈ¡Ê¾Ý
+03CE 7AFE            766             MOV R2, #0FEH
+03D0 7B00            767             MOV R3, #00H
                      768             
-03D0                 769     LAST_MUSIC:
-03D0 B4010E          770             CJNE A, #1, PAUSE
-03D3 301190          771             JNB MUSIC_MODE, KEY_RT  ;½öÒôÀÖÄ£Ê½ÏÂÓÐÐ§
-03D6 E537            772             MOV A, SONG_ORDER
-03D8 608C            773             JZ KEY_RT
-03DA 14              774             DEC A
-03DB F537            775             MOV SONG_ORDER, A
-03DD 7191            776             ACALL SWITCH_CLR
-03DF 6166            777             AJMP KEY_RT
-                     778     
-03E1                 779     PAUSE:
-03E1 201006          780             JB PLAY_MODE, KEY_RT_1
-03E4 B201            781             CPL PAUSE_FLAG
-03E6 B207            782             CPL RECORDED_PLAY
-03E8 6166            783             AJMP KEY_RT
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    13
+03D2                 769     SCAN_START:
+03D2 8AB0            770             MOV P3, R2      ;P3 É¨Ãè
+                     771     
+03D4                 772     COL0:
+03D4 209005          773             JB P1.0, COL1
+03D7 7400            774             MOV A,#0
+03D9 020404          775             LJMP CAL
+03DC                 776     COL1:
+03DC 209105          777             JB P1.1, COL2
+03DF 7401            778             MOV A,#1
+03E1 020404          779             LJMP CAL
+03E4                 780     COL2:
+03E4 209205          781             JB P1.2, COL3
+03E7 7402            782             MOV A,#2
+03E9 020404          783             LJMP CAL
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    13
 
-                     784     
-03EA                 785     KEY_RT_1:
-03EA 75903F          786             MOV P1, #3FH
-03ED 22              787             RET
-                     788     
-03EE                 789     Reset_Sources_Init:
-03EE 75FFDE          790         mov  WDTCN,     #0DEh
-03F1 75FFAD          791         mov  WDTCN,     #0ADh
-03F4 22              792         ret
-                     793     
-03F5                 794     Timer_Init:
-03F5 758E18          795         mov  CKCON,         #018h;
-03F8 758850          796             mov  TCON,      #050h
-03FB 758911          797         mov  TMOD,      #011h
-03FE 758AF5          798         mov  TL0,       #0F5h
-0401 758BEF          799         mov  TL1,       #0EFh
-0404 758CFF          800         mov  TH0,       #0FFh
-0407 758DD8          801         mov  TH1,       #0D8h
-040A 22              802         ret
-                     803     
-040B                 804     Interrupts_Init:
-040B 75A80A          805         mov  IE,        #00Ah
-040E D288            806             setb IT0
-                     807             ;setb EX0
-0410 D2AF            808             setb EA
-0412 22              809         ret
-                     810             
-0413                 811     Init_Device:
-0413 1203EE          812             lcall Reset_Sources_Init
-0416 1203F5          813         lcall Timer_Init
-0419 12040B          814         lcall Interrupts_Init
-041C 22              815         ret
-                     816             
-041D                 817     NOTE_H:
-041D F8F8F9F9        818     DB      0F8H, 0F8H, 0F9H, 0F9H, 0FAH, 0FAH, 0FAH, 0FBH, 0FBH, 0FBH, 0FBH, 0FCH, 0FCH, 0FCH,
+03EC                 784     COL3:
+03EC 209305          785             JB P1.3, COL4
+03EF 7403            786             MOV A,#3
+03F1 020404          787             LJMP CAL
+03F4                 788     COL4:
+03F4 209405          789             JB P1.4, COL5
+03F7 7404            790             MOV A,#4
+03F9 020404          791             LJMP CAL
+03FC                 792     COL5:
+03FC 209517          793             JB P1.5, KEY_P4
+03FF 7405            794             MOV A,#5
+0401 020404          795             LJMP CAL
+                     796     
+0404                 797     CAL:;µÃ³ö°´¼üÎ»ÖÃ
+0404 2B              798             ADD A, R3
+0405 941D            799             SUBB A, #29
+0407 502E            800             JNC FUNCTION_SWITCH     ;ÅÐ¶Ï¹¦ÄÜ¼ü
+0409 C3              801             CLR C
+040A 241D            802             ADD A, #29
+040C F539            803             MOV BEAT_STORE, A       ;´æÈëµ±Ç°Òô·û
+040E 301022          804             JNB PLAY_MODE, KEY_RT   ;ÅÐ¶ÏÊÇ·ñÎªµ¯×àÄ£Ê½
+0411 D204            805             SETB BEAT_ON ;¿ÉÒÔ²¥·Å
+0413 020433          806             LJMP KEY_RT
+                     807             
+0416                 808     KEY_P4:;Ò»ÐÐÉ¨Ãè½áÊø                    
+0416 EB              809             MOV A, R3
+0417 2406            810             ADD A, #6
+0419 FB              811             MOV R3, A;      ´æÒ»ÐÐ
+041A EA              812             MOV A, R2
+041B 30E505          813             JNB ACC.5, NO_INPUT 
+041E 23              814             RL A
+041F FA              815             MOV R2, A
+0420 0203D2          816             LJMP SCAN_START
+                     817     
+0423                 818     NO_INPUT:
+0423 201005          819             JB PLAY_MODE, FUN_FLAG_FALL
+0426 201202          820             JB RECORD_MODE, FUN_FLAG_FALL
+0429 C204            821             CLR BEAT_ON ;²»¿ÉÒÔ²¥·Å
+042B                 822     FUN_FLAG_FALL:  ;¹¦ÄÜ¼üÈ¥¶¶¹ÒÆðÇå³
+042B 7539F0          823             MOV BEAT_STORE, #0F0H
+042E 20050E          824             JB FUNCTION_FLAG, FUNCTION
+0431 8133            825             AJMP KEY_RT
+                     826             
+0433                 827     KEY_RT:
+0433 75903F          828             MOV P1, #3FH
+0436 22              829             RET
+                     830             
+                     831     ;¹¦ÄÜ×ª»»
+0437                 832     FUNCTION_SWITCH:
+0437 F530            833             MOV LAST_FUNCTION, A;
+0439 D205            834             SETB FUNCTION_FLAG
+043B C204            835             CLR BEAT_ON ;²»¿ÉÒÔ²¥·Å
+043D 8133            836             AJMP KEY_RT
+                     837     
+043F                 838     FUNCTION:
+043F C205            839             CLR FUNCTION_FLAG               ;Çå¿Õ¹ÒÆðµÄ¹¦ÄÜ¼ü·ûºÅ
+0441 E530            840             MOV A, LAST_FUNCTION    ;ÅÐ¶ÏÉÏÒ»¸ö°´ÏÂµÄ¹¦ÄÜ¼ü
+0443 60EE            841             JZ KEY_RT
+0445 753000          842             MOV LAST_FUNCTION, #0
+0448 B4041D          843             CJNE A, #4, OTHER_FUNCTION
+044B E522            844             MOV A, PAINO_MODE               ;Ä£Ê½ÇÐ»»
+044D 20E207          845             JB ACC.2, MODE_0
+0450 23              846             RL A
+0451 F522            847             MOV PAINO_MODE, A
+0453 915E            848             ACALL SWITCH_CLR        ;ÇåÀí±äÁ¿
+0455 8133            849             AJMP KEY_RT
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    14
+
+                     850             
+0457                 851     MODE_0:
+0457 752201          852             MOV PAINO_MODE, #1
+045A 915E            853             ACALL SWITCH_CLR
+045C 8133            854             AJMP KEY_RT
+                     855     
+045E                 856     SWITCH_CLR:     ;×ª»»Ä£Ê½Ê±ºòË³±ãÇå¿Õ±äÁ¿
+045E 753500          857             MOV TIME_H, #0
+0461 753600          858             MOV TIME_L, #0  
+0464 752001          859             MOV 20H, #1
+0467 22              860             RET
+                     861             
+0468                 862     OTHER_FUNCTION:
+0468 D200            863             SETB CLR_LCD_SIG        ;ÇåÆÁLCD
+046A                 864     RECORD_KEY:     ;ÐÞ¸ÄÎªÂ¼Òô°´¼ü
+046A B40610          865             CJNE A, #6, SKIP_2X
+046D 3012C3          866             JNB RECORD_MODE, KEY_RT ;½öÂ¼ÒôÄ£Ê½ÏÂÓÐÐ§
+0470 B203            867             CPL RECORING_SIG
+0472 753500          868             MOV TIME_H, #0
+0475 753600          869             MOV TIME_L, #0  
+0478 7539FF          870             MOV BEAT_STORE, #0FFH
+047B 8133            871             AJMP KEY_RT
+                     872     
+047D                 873     SKIP_2X:        ;¿ì½ø¹¦ÄÜ¼ü
+047D B40507          874             CJNE A, #5, NEXT_MUSIC
+0480 2010B0          875             JB PLAY_MODE, KEY_RT
+0483 B206            876             CPL SKIP_2X_FLAG
+0485 8133            877             AJMP KEY_RT
+                     878             
+0487                 879     NEXT_MUSIC:     ;Ê±¼ä´æ´¢»¹ÐèÒªÇåÁã
+0487 B40313          880             CJNE A, #3, LAST_MUSIC
+048A 3011A6          881             JNB MUSIC_MODE, KEY_RT  ;½öÒôÀÖÄ£Ê½ÏÂÓÐÐ§
+048D E537            882             MOV A, SONG_ORDER
+048F 9403            883             SUBB A, #3
+0491 50A0            884             JNC KEY_RT
+0493 C3              885             CLR C
+0494 E537            886             MOV A, SONG_ORDER
+0496 04              887             INC A
+0497 F537            888             MOV SONG_ORDER, A
+0499 915E            889             ACALL SWITCH_CLR
+049B 8133            890             AJMP KEY_RT
+                     891             
+049D                 892     LAST_MUSIC:
+049D B4010E          893             CJNE A, #1, PAUSE
+04A0 301190          894             JNB MUSIC_MODE, KEY_RT  ;½öÒôÀÖÄ£Ê½ÏÂÓÐÐ§
+04A3 E537            895             MOV A, SONG_ORDER
+04A5 608C            896             JZ KEY_RT
+04A7 14              897             DEC A
+04A8 F537            898             MOV SONG_ORDER, A
+04AA 915E            899             ACALL SWITCH_CLR
+04AC 8133            900             AJMP KEY_RT
+                     901     
+04AE                 902     PAUSE:
+04AE 201006          903             JB PLAY_MODE, KEY_RT_1
+04B1 B201            904             CPL PAUSE_FLAG
+04B3 B207            905             CPL RECORDED_PLAY
+04B5 8133            906             AJMP KEY_RT
+                     907     
+04B7                 908     KEY_RT_1:
+04B7 75903F          909             MOV P1, #3FH
+04BA 22              910             RET
+                     911     
+04BB                 912     Reset_Sources_Init:
+04BB 75FFDE          913         mov  WDTCN,     #0DEh
+04BE 75FFAD          914         mov  WDTCN,     #0ADh
+04C1 22              915         ret
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    15
+
+                     916     
+04C2                 917     Timer_Init:
+04C2 758E18          918         mov  CKCON,         #018h;
+04C5 758850          919             mov  TCON,      #050h
+04C8 758911          920         mov  TMOD,      #011h
+04CB 758AF5          921         mov  TL0,       #0F5h
+04CE 758BEF          922         mov  TL1,       #0EFh
+04D1 758CFF          923         mov  TH0,       #0FFh
+04D4 758DD8          924         mov  TH1,       #0D8h
+04D7 22              925         ret
+                     926     
+04D8                 927     Interrupts_Init:
+04D8 75A80A          928         mov  IE,        #00Ah
+04DB D288            929             setb IT0
+                     930             ;setb EX0
+04DD D2AF            931             setb EA
+04DF 22              932         ret
+                     933             
+04E0                 934     Init_Device:
+04E0 1204BB          935             lcall Reset_Sources_Init
+04E3 1204C2          936         lcall Timer_Init
+04E6 1204D8          937         lcall Interrupts_Init
+04E9 22              938         ret
+                     939             
+04EA                 940     NOTE_H:
+04EA F8F8F9F9        941     DB      0F8H, 0F8H, 0F9H, 0F9H, 0FAH, 0FAH, 0FAH, 0FBH, 0FBH, 0FBH, 0FBH, 0FCH, 0FCH, 0FCH,
                               0FCH, 0FCH, 0FDH, 0FDH, 0FDH, 0FDH, 0FDH, 0FDH, 0FDH, 0FEH,0FEH, 0FEH, 0FEH, 0FEH, 0FEH, 0
                              FEH, 0FEH, 0FEH, 0FEH, 0FEH, 0FEH, 0FFH
-0421 FAFAFAFB                
-0425 FBFBFBFC                
-0429 FCFCFCFC                
-042D FDFDFDFD                
-0431 FDFDFDFE                
-0435 FEFEFEFE                
-0439 FEFEFEFE                
-043D FEFEFEFF                
-0441                 819     NOTE_L:
-0441 8C8F5BB8        820     DB      8CH, 8FH, 5BH, 0B8H, 15H, 67H, 0B9H, 04H, 4AH, 90H, 0BCH, 0CH, 44H, 79H, 0ACH, 0DCH
+04EE FAFAFAFB                
+04F2 FBFBFBFC                
+04F6 FCFCFCFC                
+04FA FDFDFDFD                
+04FE FDFDFDFE                
+0502 FEFEFEFE                
+0506 FEFEFEFE                
+050A FEFEFEFF                
+050E                 942     NOTE_L:
+050E 8C8F5BB8        943     DB      8CH, 8FH, 5BH, 0B8H, 15H, 67H, 0B9H, 04H, 4AH, 90H, 0BCH, 0CH, 44H, 79H, 0ACH, 0DCH
                              , 09H, 34H, 5CH, 82H, 0A6H, 0C8H, 0E7H, 05H, 21H, 3CH, 55H, 6DH, 84H, 9AH, 0ADH, 0C0H, 0D2H, 0E3H, 0F3H, 02H
-0445 1567B904                
-0449 4A90BC0C                
-044D 4479ACDC                
-0451 09345C82                
-0455 A6C8E705                
-0459 213C556D                
-045D 849AADC0                
-0461 D2E3F302                
-0465                 821     PLAY_SCREEN1:
-0465 42656174        822     DB "Beat:     mode:2"
-0469 3A202020                
-046D 20206D6F                
-0471 64653A32                
-0475 00              823     NOP
-0476                 824     PLAY_SCREEN2:
-0476 54696D65        825     DB "Time:"
-047A 3A                      
-047B 00              826     NOP
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    14
+0512 1567B904                
+0516 4A90BC0C                
+051A 4479ACDC                
+051E 09345C82                
+0522 A6C8E705                
+0526 213C556D                
+052A 849AADC0                
+052E D2E3F302                
+0532                 944     PLAY_SCREEN1:
+0532 504C4159        945     DB "PLAY MODE"
+0536 204D4F44                
+053A 45                      
+053B 00              946     NOP
+053C                 947     PLAY_SCREEN2:
+053C 42454154        948     DB "BEATS:"
+0540 533A                    
+0542 00              949     NOP
+0543                 950     PLAY_BEATS:
+0543                 951     N0:
+0543 446F20          952     DB "Do "
+0546 00              953     NOP
+0547                 954     N1:
+0547 446F23          955     DB "Do#"
+054A 00              956     NOP
+054B                 957     N2:
+054B 526520          958     DB "Re "
+054E 00              959     NOP
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    16
 
-047C                 827     MUSIC_MODE1: 
-047C 6D757369        828     DB "music:    mode:"
-0480 633A2020                
-0484 20206D6F                
-0488 64653A                  
-048B 00              829     NOP
-048C                 830     MUSIC_NAME:
-048C                 831     MUSIC_NAME0: 
-048C 414F2048        832     DB "AO HARU"
-0490 415255                  
-0493 00              833     NOP
-0494                 834     MUSIC_NAME1: 
-0494 4E414D45        835     DB "NAME2"
-0498 32                      
-0499 00              836     NOP
-049A                 837     MUSIC_NAME2: 
-049A 4E414D45        838     DB "NAME3"
-049E 33                      
-049F 00              839     NOP
-04A0                 840     RECORD_SCREEN1:
-04A0 5245434F        841     DB "RECORDING..."
-04A4 5244494E                
-04A8 472E2E2E                
-04AC 00              842     NOP
-04AD                 843     RECORD_SCREEN2:
-04AD 504C4159        844     DB "PLAYING"
-04B1 494E47                  
-04B4 00              845     NOP
-04B5                 846     MUSIC_LIST:
-04B5                 847     MUSIC_0:
-04B5 F0F0F0F0        848     DB 0F0H,0F0H,0F0H,0F0H
-04B9 23211D19        849     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04BD F0F0F0F0                
-04C1 F0F0F0F0                
-04C5 23211D19        850     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04C9 F0F0F0F0                
-04CD F0F0F0F0                
-04D1 23211D19        851     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04D5 F0F0F0F0                
-04D9 F0F0F0F0                
-04DD 171B1F21        852     DB 23, 27, 31, 33, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04E1 F0F0F0F0                
-04E5 F0F0F0F0                
-                     853             
-04E9 23211D19        854     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04ED F0F0F0F0                
-04F1 F0F0F0F0                
-04F5 23211D19        855     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-04F9 F0F0F0F0                
-04FD F0F0F0F0                
-0501 23211D19        856     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-0505 F0F0F0F0                
-0509 F0F0F0F0                
-050D 171B1F21        857     DB 23, 27, 31, 33, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
-0511 F0F0F0F0                
-0515 F0F0F0F0                
-                     858             
-0519 FF              859     DB 0FFH
-051A                 860     MUSIC_1:
-051A 1E1D1C1B        861     DB 30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,30,29,2
+054F                 960     N3:
+054F 526523          961     DB "Re#"
+0552 00              962     NOP
+0553                 963     N4:
+0553 4D6920          964     DB "Mi "
+0556 00              965     NOP
+0557                 966     N5:
+0557 466120          967     DB "Fa "
+055A 00              968     NOP
+055B                 969     N6:
+055B 466123          970     DB "Fa#"
+055E 00              971     NOP
+055F                 972     N7:
+055F 536F20          973     DB "So "
+0562 00              974     NOP
+0563                 975     N8:
+0563 536F23          976     DB "So#"
+0566 00              977     NOP
+0567                 978     N9:
+0567 4C6120          979     DB "La "
+056A 00              980     NOP
+056B                 981     N10:
+056B 4C6123          982     DB "La#"
+056E 00              983     NOP
+056F                 984     N11:
+056F 586920          985     DB "Xi "
+0572 00              986     NOP
+0573                 987     N12:
+0573 202020          988     DB "   "
+0576 00              989     NOP
+0577                 990     CHINESE_WORDS:
+0577                 991     JIANG:
+0577 1F1F1F0E        992     DB 1FH, 1FH, 1FH, 0EH, 0EH, 04H, 04H, 04H
+057B 0E040404                
+057F 00              993     NOP
+0580                 994     SHENG:
+0580 0404040E        995     DB 04H, 04H, 04H, 0EH, 0EH, 1FH, 1FH, 1FH
+0584 0E1F1F1F                
+0588 00              996     NOP
+0589                 997     MUSIC_MODE1: 
+0589 54494D45        998     DB "TIME  music:"
+058D 20206D75                
+0591 7369633A                
+0595 00              999     NOP
+0596                1000     MUSIC_NAME:
+0596                1001     MUSIC_NAME0: 
+0596 414F2048       1002     DB "AO HARU"
+059A 415255                  
+059D 00             1003     NOP
+059E                1004     MUSIC_NAME1: 
+059E 4E414D45       1005     DB "NAME2"
+05A2 32                      
+05A3 00             1006     NOP
+05A4                1007     MUSIC_NAME2: 
+05A4 4E414D45       1008     DB "NAME3"
+05A8 33                      
+05A9 00             1009     NOP
+05AA                1010     RECORD_SCREEN1:
+05AA 5245434F       1011     DB "RECORDING..."
+05AE 5244494E                
+05B2 472E2E2E                
+05B6 00             1012     NOP
+05B7                1013     RECORD_SCREEN2:
+05B7 504C4159       1014     DB "PLAYING"
+05BB 494E47                  
+05BE 00             1015     NOP
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    17
+
+05BF                1016     MUSIC_LIST:
+05BF                1017     MUSIC_0:
+05BF F0F0F0F0       1018     DB 0F0H,0F0H,0F0H,0F0H
+05C3 23211D19       1019     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+05C7 F0F0F0F0                
+05CB F0F0F0F0                
+05CF 23211D19       1020     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+05D3 F0F0F0F0                
+05D7 F0F0F0F0                
+05DB 23211D19       1021     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+05DF F0F0F0F0                
+05E3 F0F0F0F0                
+05E7 171B1F21       1022     DB 23, 27, 31, 33, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+05EB F0F0F0F0                
+05EF F0F0F0F0                
+                    1023             
+05F3 23211D19       1024     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+05F7 F0F0F0F0                
+05FB F0F0F0F0                
+05FF 23211D19       1025     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+0603 F0F0F0F0                
+0607 F0F0F0F0                
+060B 23211D19       1026     DB 35, 33, 29, 25, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+060F F0F0F0F0                
+0613 F0F0F0F0                
+0617 171B1F21       1027     DB 23, 27, 31, 33, 0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H,0F0H
+061B F0F0F0F0                
+061F F0F0F0F0                
+                    1028             
+0623 FF             1029     DB 0FFH
+0624                1030     MUSIC_1:
+0624 1E1D1C1B       1031     DB 30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,30,29,2
                              8,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,30,29,28,27,26,25
                              ,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0FFH      
-051E 1A191817                
-0522 16151413                
-0526 1211100F                
-052A 0E0D0C0B                
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    15
-
-052E 0A090807                
-0532 06050403                
-0536 02011E1D                
-053A 1C1B1A19                
-053E 18171615                
-0542 14131211                
-0546 100F0E0D                
-054A 0C0B0A09                
-054E 08070605                
-0552 04030201                
-0556 1E1D1C1B                
-055A 1A191817                
-055E 16151413                
-0562 1211100F                
-0566 0E0D0C0B                
-056A 0A090807                
-056E 06050403                
-0572 0201FF                  
-0575                 862     MUSIC_2:
-0575 1E1D1C1B        863     DB 30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,1, 2, 3
+0628 1A191817                
+062C 16151413                
+0630 1211100F                
+0634 0E0D0C0B                
+0638 0A090807                
+063C 06050403                
+0640 02011E1D                
+0644 1C1B1A19                
+0648 18171615                
+064C 14131211                
+0650 100F0E0D                
+0654 0C0B0A09                
+0658 08070605                
+065C 04030201                
+0660 1E1D1C1B                
+0664 1A191817                
+0668 16151413                
+066C 1211100F                
+0670 0E0D0C0B                
+0674 0A090807                
+0678 06050403                
+067C 0201FF                  
+067F                1032     MUSIC_2:
+067F 1E1D1C1B       1033     DB 30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,1, 2, 3
                              , 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,30,29,28,
                              27,26,25,24,23,22,21,20,19,18,17,16,0FFH
-0579 1A191817                
-057D 16151413                
-0581 1211100F                
-0585 0E0D0C0B                
-0589 0A090807                
-058D 06050403                
-0591 02010102                
-0595 03040506                
-0599 0708090A                
-059D 0B0C0D0E                
-05A1 0F101112                
-05A5 13141516                
-05A9 1718191A                
-05AD 1B1C1D1E                
-05B1 1E1D1C1B                
-05B5 1A191817                
-05B9 16151413                
-05BD 121110FF                
-                     864             
-                     865     end
+0683 1A191817                
+0687 16151413                
+068B 1211100F                
+068F 0E0D0C0B                
+0693 0A090807                
+0697 06050403                
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    18
+
+069B 02010102                
+069F 03040506                
+06A3 0708090A                
+06A7 0B0C0D0E                
+06AB 0F101112                
+06AF 13141516                
+06B3 1718191A                
+06B7 1B1C1D1E                
+06BB 1E1D1C1B                
+06BF 1A191817                
+06C3 16151413                
+06C7 121110FF                
+                    1034             
+                    1035     end
                              
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    16
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    19
 
 SYMBOL TABLE LISTING
 ------ ----- -------
 
 
-N A M E             T Y P E  V A L U E   ATTRIBUTES
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
 
-AA . . . . . . . .  B ADDR   00C0H.2 A   
-AC . . . . . . . .  B ADDR   00D0H.6 A   
-ACC. . . . . . . .  D ADDR   00E0H   A   
-AD0BUSY. . . . . .  B ADDR   00E8H.4 A   
-AD0EN. . . . . . .  B ADDR   00E8H.7 A   
-AD0INT . . . . . .  B ADDR   00E8H.5 A   
-AD0LJST. . . . . .  B ADDR   00E8H.0 A   
-AD0STM0. . . . . .  B ADDR   00E8H.2 A   
-AD0STM1. . . . . .  B ADDR   00E8H.3 A   
-AD0TM. . . . . . .  B ADDR   00E8H.6 A   
-AD0WINT. . . . . .  B ADDR   00E8H.1 A   
-ADC0CF . . . . . .  D ADDR   00BCH   A   
-ADC0CN . . . . . .  D ADDR   00E8H   A   
-ADC0GTH. . . . . .  D ADDR   00C5H   A   
-ADC0GTL. . . . . .  D ADDR   00C4H   A   
-ADC0H. . . . . . .  D ADDR   00BFH   A   
-ADC0L. . . . . . .  D ADDR   00BEH   A   
-ADC0LTH. . . . . .  D ADDR   00C7H   A   
-ADC0LTL. . . . . .  D ADDR   00C6H   A   
-ADC1 . . . . . . .  D ADDR   009CH   A   
-ADC1CF . . . . . .  D ADDR   00ABH   A   
-ADC1CN . . . . . .  D ADDR   00AAH   A   
-AMX0CF . . . . . .  D ADDR   00BAH   A   
-AMX0SL . . . . . .  D ADDR   00BBH   A   
-AMX1SL . . . . . .  D ADDR   00ACH   A   
-B. . . . . . . . .  D ADDR   00F0H   A   
-BEAT_ON. . . . . .  B ADDR   0020H.4 A   
-BEAT_STORE . . . .  N NUMB   0039H   A   
-BUZZER . . . . . .  B ADDR   00A0H.6 A   
-CAL. . . . . . . .  C ADDR   0337H   A   
-CCF0 . . . . . . .  B ADDR   00D8H.0 A   
-CCF1 . . . . . . .  B ADDR   00D8H.1 A   
-CCF2 . . . . . . .  B ADDR   00D8H.2 A   
-CCF3 . . . . . . .  B ADDR   00D8H.3 A   
-CCF4 . . . . . . .  B ADDR   00D8H.4 A   
-CF . . . . . . . .  B ADDR   00D8H.7 A   
-CKCON. . . . . . .  D ADDR   008EH   A   
-CLR_LCD_SIG. . . .  B ADDR   0020H.0 A   
-COL0 . . . . . . .  C ADDR   0307H   A   
-COL1 . . . . . . .  C ADDR   030FH   A   
-COL2 . . . . . . .  C ADDR   0317H   A   
-COL3 . . . . . . .  C ADDR   031FH   A   
-COL4 . . . . . . .  C ADDR   0327H   A   
-COL5 . . . . . . .  C ADDR   032FH   A   
-COUNT_PLUS_H . . .  C ADDR   02F4H   A   
-COUNT_PLUS_L . . .  C ADDR   02F0H   A   
-CPRL2. . . . . . .  B ADDR   00C8H.0 A   
-CPT0CN . . . . . .  D ADDR   009EH   A   
-CPT1CN . . . . . .  D ADDR   009FH   A   
-CR . . . . . . . .  B ADDR   00D8H.6 A   
-CT2. . . . . . . .  B ADDR   00C8H.1 A   
-CURRENT_BEATS_H. .  N NUMB   0031H   A   
-CURRENT_BEATS_L. .  N NUMB   0032H   A   
-CY . . . . . . . .  B ADDR   00D0H.7 A   
-D1 . . . . . . . .  C ADDR   01F7H   A   
-DAC0CN . . . . . .  D ADDR   00D4H   A   
-DAC0H. . . . . . .  D ADDR   00D3H   A   
-DAC0L. . . . . . .  D ADDR   00D2H   A   
-DAC1CN . . . . . .  D ADDR   00D7H   A   
-DAC1H. . . . . . .  D ADDR   00D6H   A   
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    17
+AA . . . . . . . . . .  B ADDR   00C0H.2 A   
+AC . . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC. . . . . . . . . .  D ADDR   00E0H   A   
+AD0BUSY. . . . . . . .  B ADDR   00E8H.4 A   
+AD0EN. . . . . . . . .  B ADDR   00E8H.7 A   
+AD0INT . . . . . . . .  B ADDR   00E8H.5 A   
+AD0LJST. . . . . . . .  B ADDR   00E8H.0 A   
+AD0STM0. . . . . . . .  B ADDR   00E8H.2 A   
+AD0STM1. . . . . . . .  B ADDR   00E8H.3 A   
+AD0TM. . . . . . . . .  B ADDR   00E8H.6 A   
+AD0WINT. . . . . . . .  B ADDR   00E8H.1 A   
+ADC0CF . . . . . . . .  D ADDR   00BCH   A   
+ADC0CN . . . . . . . .  D ADDR   00E8H   A   
+ADC0GTH. . . . . . . .  D ADDR   00C5H   A   
+ADC0GTL. . . . . . . .  D ADDR   00C4H   A   
+ADC0H. . . . . . . . .  D ADDR   00BFH   A   
+ADC0L. . . . . . . . .  D ADDR   00BEH   A   
+ADC0LTH. . . . . . . .  D ADDR   00C7H   A   
+ADC0LTL. . . . . . . .  D ADDR   00C6H   A   
+ADC1 . . . . . . . . .  D ADDR   009CH   A   
+ADC1CF . . . . . . . .  D ADDR   00ABH   A   
+ADC1CN . . . . . . . .  D ADDR   00AAH   A   
+AMX0CF . . . . . . . .  D ADDR   00BAH   A   
+AMX0SL . . . . . . . .  D ADDR   00BBH   A   
+AMX1SL . . . . . . . .  D ADDR   00ACH   A   
+B. . . . . . . . . . .  D ADDR   00F0H   A   
+B0 . . . . . . . . . .  C ADDR   01FCH   A   
+B1 . . . . . . . . . .  C ADDR   01F3H   A   
+B10. . . . . . . . . .  C ADDR   01A2H   A   
+B11. . . . . . . . . .  C ADDR   0199H   A   
+B12. . . . . . . . . .  C ADDR   0190H   A   
+B2 . . . . . . . . . .  C ADDR   01EAH   A   
+B3 . . . . . . . . . .  C ADDR   01E1H   A   
+B4 . . . . . . . . . .  C ADDR   01D8H   A   
+B5 . . . . . . . . . .  C ADDR   01CFH   A   
+B6 . . . . . . . . . .  C ADDR   01C6H   A   
+B7 . . . . . . . . . .  C ADDR   01BDH   A   
+B8 . . . . . . . . . .  C ADDR   01B4H   A   
+B9 . . . . . . . . . .  C ADDR   01ABH   A   
+BEAT_DISPLAY . . . . .  C ADDR   018EH   A   
+BEAT_ON. . . . . . . .  B ADDR   0020H.4 A   
+BEAT_STORE . . . . . .  N NUMB   0039H   A   
+BUZZER . . . . . . . .  B ADDR   00A0H.6 A   
+CAL. . . . . . . . . .  C ADDR   0404H   A   
+CCF0 . . . . . . . . .  B ADDR   00D8H.0 A   
+CCF1 . . . . . . . . .  B ADDR   00D8H.1 A   
+CCF2 . . . . . . . . .  B ADDR   00D8H.2 A   
+CCF3 . . . . . . . . .  B ADDR   00D8H.3 A   
+CCF4 . . . . . . . . .  B ADDR   00D8H.4 A   
+CF . . . . . . . . . .  B ADDR   00D8H.7 A   
+CHINESE_WORDS. . . . .  C ADDR   0577H   A   
+CKCON. . . . . . . . .  D ADDR   008EH   A   
+CLR_LCD_SIG. . . . . .  B ADDR   0020H.0 A   
+COL0 . . . . . . . . .  C ADDR   03D4H   A   
+COL1 . . . . . . . . .  C ADDR   03DCH   A   
+COL2 . . . . . . . . .  C ADDR   03E4H   A   
+COL3 . . . . . . . . .  C ADDR   03ECH   A   
+COL4 . . . . . . . . .  C ADDR   03F4H   A   
+COL5 . . . . . . . . .  C ADDR   03FCH   A   
+COUNT_PLUS_H . . . . .  C ADDR   03C1H   A   
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    20
 
-DAC1L. . . . . . .  D ADDR   00D5H   A   
-DELAY. . . . . . .  C ADDR   01F5H   A   
-DELAY_T1 . . . . .  N NUMB   0034H   A   
-DPH. . . . . . . .  D ADDR   0083H   A   
-DPL. . . . . . . .  D ADDR   0082H   A   
-E. . . . . . . . .  B ADDR   00A0H.5 A   
-EA . . . . . . . .  B ADDR   00A8H.7 A   
-EIE1 . . . . . . .  D ADDR   00E6H   A   
-EIE2 . . . . . . .  D ADDR   00E7H   A   
-EIP1 . . . . . . .  D ADDR   00F6H   A   
-EIP2 . . . . . . .  D ADDR   00F7H   A   
-EMI0CF . . . . . .  D ADDR   00A3H   A   
-EMI0CN . . . . . .  D ADDR   00AFH   A   
-EMI0TC . . . . . .  D ADDR   00A1H   A   
-ENABLE . . . . . .  C ADDR   01BAH   A   
-ENSMB. . . . . . .  B ADDR   00C0H.6 A   
-ES . . . . . . . .  B ADDR   00A8H.4 A   
-ET0. . . . . . . .  B ADDR   00A8H.1 A   
-ET1. . . . . . . .  B ADDR   00A8H.3 A   
-ET2. . . . . . . .  B ADDR   00A8H.5 A   
-EX0. . . . . . . .  B ADDR   00A8H.0 A   
-EX1. . . . . . . .  B ADDR   00A8H.2 A   
-EXEN2. . . . . . .  B ADDR   00C8H.3 A   
-EXF2 . . . . . . .  B ADDR   00C8H.6 A   
-F0 . . . . . . . .  B ADDR   00D0H.5 A   
-F1 . . . . . . . .  B ADDR   00D0H.1 A   
-FLACL. . . . . . .  D ADDR   00B7H   A   
-FLSCL. . . . . . .  D ADDR   00B6H   A   
-FUNCTION . . . . .  C ADDR   0372H   A   
-FUNCTION_FLAG. . .  B ADDR   0020H.5 A   
-FUNCTION_SWITCH. .  C ADDR   036AH   A   
-FUN_FLAG_FALL. . .  C ADDR   035EH   A   
-GET_BEATS_C. . . .  C ADDR   029EH   A   
-GET_BEATS_X. . . .  C ADDR   02CDH   A   
-IE . . . . . . . .  D ADDR   00A8H   A   
-IE0. . . . . . . .  B ADDR   0088H.1 A   
-IE1. . . . . . . .  B ADDR   0088H.3 A   
-ININ_LCD_. . . . .  C ADDR   011DH   A   
-INIT . . . . . . .  C ADDR   0100H   A   
-INIT_DEVICE. . . .  C ADDR   0413H   A   
-INTERRUPTS_INIT. .  C ADDR   040BH   A   
-IP . . . . . . . .  D ADDR   00B8H   A   
-IT0. . . . . . . .  B ADDR   0088H.0 A   
-IT1. . . . . . . .  B ADDR   0088H.2 A   
-KEY_CHECK. . . . .  C ADDR   0301H   A   
-KEY_GETNUM . . . .  C ADDR   0301H   A   
-KEY_P4 . . . . . .  C ADDR   0349H   A   
-KEY_RT . . . . . .  C ADDR   0366H   A   
-KEY_RT_1 . . . . .  C ADDR   03EAH   A   
-LAST_FUNCTION. . .  N NUMB   0030H   A   
-LAST_MUSIC . . . .  C ADDR   03D0H   A   
-LCD_CLR. . . . . .  C ADDR   01C5H   A   
-LCD_DATA_PTR . . .  N NUMB   0038H   A   
-LCD_DISPLAY. . . .  C ADDR   0140H   A   
-LCD_DISPLAY_NAME .  C ADDR   0185H   A   
-LCD_MUSIC. . . . .  C ADDR   0161H   A   
-LCD_NAME0. . . . .  C ADDR   0170H   A   
-LCD_NAME1. . . . .  C ADDR   0178H   A   
-LCD_NAME2. . . . .  C ADDR   0180H   A   
-LCD_PLAY . . . . .  C ADDR   014CH   A   
-LCD_PLAY_ROW1. . .  C ADDR   014CH   A   
-LCD_PLAY_ROW2. . .  C ADDR   0156H   A   
-LCD_RECORD . . . .  C ADDR   018FH   A   
-LCD_RECORDED_ROW1.  C ADDR   019EH   A   
-LCD_RECORDING_R0W1  C ADDR   018FH   A   
-LCD_ROW1 . . . . .  C ADDR   0164H   A   
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    18
+COUNT_PLUS_L . . . . .  C ADDR   03BDH   A   
+CPRL2. . . . . . . . .  B ADDR   00C8H.0 A   
+CPT0CN . . . . . . . .  D ADDR   009EH   A   
+CPT1CN . . . . . . . .  D ADDR   009FH   A   
+CR . . . . . . . . . .  B ADDR   00D8H.6 A   
+CT2. . . . . . . . . .  B ADDR   00C8H.1 A   
+CURRENT_BEATS_H. . . .  N NUMB   0031H   A   
+CURRENT_BEATS_L. . . .  N NUMB   0032H   A   
+CY . . . . . . . . . .  B ADDR   00D0H.7 A   
+D1 . . . . . . . . . .  C ADDR   02ADH   A   
+DAC0CN . . . . . . . .  D ADDR   00D4H   A   
+DAC0H. . . . . . . . .  D ADDR   00D3H   A   
+DAC0L. . . . . . . . .  D ADDR   00D2H   A   
+DAC1CN . . . . . . . .  D ADDR   00D7H   A   
+DAC1H. . . . . . . . .  D ADDR   00D6H   A   
+DAC1L. . . . . . . . .  D ADDR   00D5H   A   
+DELAY. . . . . . . . .  C ADDR   02ABH   A   
+DELAY_T1 . . . . . . .  N NUMB   0034H   A   
+DPH. . . . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . . . .  D ADDR   0082H   A   
+E. . . . . . . . . . .  B ADDR   00A0H.5 A   
+EA . . . . . . . . . .  B ADDR   00A8H.7 A   
+EIE1 . . . . . . . . .  D ADDR   00E6H   A   
+EIE2 . . . . . . . . .  D ADDR   00E7H   A   
+EIP1 . . . . . . . . .  D ADDR   00F6H   A   
+EIP2 . . . . . . . . .  D ADDR   00F7H   A   
+EMI0CF . . . . . . . .  D ADDR   00A3H   A   
+EMI0CN . . . . . . . .  D ADDR   00AFH   A   
+EMI0TC . . . . . . . .  D ADDR   00A1H   A   
+ENABLE . . . . . . . .  C ADDR   0270H   A   
+ENSMB. . . . . . . . .  B ADDR   00C0H.6 A   
+ES . . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0. . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . . . .  B ADDR   00A8H.3 A   
+ET2. . . . . . . . . .  B ADDR   00A8H.5 A   
+EX0. . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1. . . . . . . . . .  B ADDR   00A8H.2 A   
+EXEN2. . . . . . . . .  B ADDR   00C8H.3 A   
+EXF2 . . . . . . . . .  B ADDR   00C8H.6 A   
+F0 . . . . . . . . . .  B ADDR   00D0H.5 A   
+F1 . . . . . . . . . .  B ADDR   00D0H.1 A   
+FLACL. . . . . . . . .  D ADDR   00B7H   A   
+FLSCL. . . . . . . . .  D ADDR   00B6H   A   
+FUNCTION . . . . . . .  C ADDR   043FH   A   
+FUNCTION_FLAG. . . . .  B ADDR   0020H.5 A   
+FUNCTION_SWITCH. . . .  C ADDR   0437H   A   
+FUN_FLAG_FALL. . . . .  C ADDR   042BH   A   
+GET_BEATS_C. . . . . .  C ADDR   0356H   A   
+GET_BEATS_X. . . . . .  C ADDR   0385H   A   
+IE . . . . . . . . . .  D ADDR   00A8H   A   
+IE0. . . . . . . . . .  B ADDR   0088H.1 A   
+IE1. . . . . . . . . .  B ADDR   0088H.3 A   
+ININ_LCD . . . . . . .  C ADDR   011DH   A   
+INIT . . . . . . . . .  C ADDR   0100H   A   
+INIT_DEVICE. . . . . .  C ADDR   04E0H   A   
+INTERRUPTS_INIT. . . .  C ADDR   04D8H   A   
+IP . . . . . . . . . .  D ADDR   00B8H   A   
+IT0. . . . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . . . .  B ADDR   0088H.2 A   
+JIANG. . . . . . . . .  C ADDR   0577H   A   
+JIANG_DISPLAY. . . . .  C ADDR   0174H   A   
+KEY_CHECK. . . . . . .  C ADDR   03CEH   A   
+KEY_GETNUM . . . . . .  C ADDR   03CEH   A   
+KEY_P4 . . . . . . . .  C ADDR   0416H   A   
+KEY_RT . . . . . . . .  C ADDR   0433H   A   
+KEY_RT_1 . . . . . . .  C ADDR   04B7H   A   
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    21
 
-LCD_ROW2 . . . . .  C ADDR   016EH   A   
-LCD_RT . . . . . .  C ADDR   01FAH   A   
-LCD_TIME_DP. . . .  C ADDR   01A8H   A   
-LCD_WRITE. . . . .  C ADDR   01CDH   A   
-LCD_WRITE_NUM. . .  C ADDR   01E5H   A   
-MAIN . . . . . . .  C ADDR   0100H   A   
-MAIN_LOOP. . . . .  C ADDR   013CH   A   
-MODE_0 . . . . . .  C ADDR   038AH   A   
-MODF . . . . . . .  B ADDR   00F8H.5 A   
-MSTEN. . . . . . .  B ADDR   00F8H.1 A   
-MUSIC_0. . . . . .  C ADDR   04B5H   A   
-MUSIC_1. . . . . .  C ADDR   051AH   A   
-MUSIC_2. . . . . .  C ADDR   0575H   A   
-MUSIC_FINSH. . . .  B ADDR   0020H.2 A   
-MUSIC_LIST . . . .  C ADDR   04B5H   A   
-MUSIC_MODE . . . .  B ADDR   0022H.1 A   
-MUSIC_MODE1. . . .  C ADDR   047CH   A   
-MUSIC_NAME . . . .  C ADDR   048CH   A   
-MUSIC_NAME0. . . .  C ADDR   048CH   A   
-MUSIC_NAME1. . . .  C ADDR   0494H   A   
-MUSIC_NAME2. . . .  C ADDR   049AH   A   
-MUSIC_PAUSE. . . .  C ADDR   02A2H   A   
-NEXT_MUSIC . . . .  C ADDR   03BAH   A   
-NOTE_H . . . . . .  C ADDR   041DH   A   
-NOTE_L . . . . . .  C ADDR   0441H   A   
-NO_INPUT . . . . .  C ADDR   0356H   A   
-OSCICN . . . . . .  D ADDR   00B2H   A   
-OSCXCN . . . . . .  D ADDR   00B1H   A   
-OTHER_FUNCTION . .  C ADDR   039BH   A   
-OUT_CHANGE . . . .  C ADDR   0208H   A   
-OV . . . . . . . .  B ADDR   00D0H.2 A   
-P. . . . . . . . .  B ADDR   00D0H.0 A   
-P0 . . . . . . . .  D ADDR   0080H   A   
-P0MDOUT. . . . . .  D ADDR   00A4H   A   
-P1 . . . . . . . .  D ADDR   0090H   A   
-P1MDIN . . . . . .  D ADDR   00BDH   A   
-P1MDOUT. . . . . .  D ADDR   00A5H   A   
-P2 . . . . . . . .  D ADDR   00A0H   A   
-P2MDOUT. . . . . .  D ADDR   00A6H   A   
-P3 . . . . . . . .  D ADDR   00B0H   A   
-P3IF . . . . . . .  D ADDR   00ADH   A   
-P3MDOUT. . . . . .  D ADDR   00A7H   A   
-P4 . . . . . . . .  D ADDR   0084H   A   
-P5 . . . . . . . .  D ADDR   0085H   A   
-P6 . . . . . . . .  D ADDR   0086H   A   
-P7 . . . . . . . .  D ADDR   0096H   A   
-P74OUT . . . . . .  D ADDR   00B5H   A   
-PAINO_MODE . . . .  N NUMB   0022H   A   
-PAUSE. . . . . . .  C ADDR   03E1H   A   
-PAUSE_FLAG . . . .  B ADDR   0020H.1 A   
-PCA0CN . . . . . .  D ADDR   00D8H   A   
-PCA0CPH0 . . . . .  D ADDR   00FAH   A   
-PCA0CPH1 . . . . .  D ADDR   00FBH   A   
-PCA0CPH2 . . . . .  D ADDR   00FCH   A   
-PCA0CPH3 . . . . .  D ADDR   00FDH   A   
-PCA0CPH4 . . . . .  D ADDR   00FEH   A   
-PCA0CPL0 . . . . .  D ADDR   00EAH   A   
-PCA0CPL1 . . . . .  D ADDR   00EBH   A   
-PCA0CPL2 . . . . .  D ADDR   00ECH   A   
-PCA0CPL3 . . . . .  D ADDR   00EDH   A   
-PCA0CPL4 . . . . .  D ADDR   00EEH   A   
-PCA0CPM0 . . . . .  D ADDR   00DAH   A   
-PCA0CPM1 . . . . .  D ADDR   00DBH   A   
-PCA0CPM2 . . . . .  D ADDR   00DCH   A   
-PCA0CPM3 . . . . .  D ADDR   00DDH   A   
-PCA0CPM4 . . . . .  D ADDR   00DEH   A   
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    19
+LAST_FUNCTION. . . . .  N NUMB   0030H   A   
+LAST_MUSIC . . . . . .  C ADDR   049DH   A   
+LCD_CLR. . . . . . . .  C ADDR   027BH   A   
+LCD_CLR_TEMP . . . . .  C ADDR   018AH   A   
+LCD_DATA_PTR . . . . .  N NUMB   0038H   A   
+LCD_DISPLAY. . . . . .  C ADDR   0144H   A   
+LCD_DISPLAY_NAME . . .  C ADDR   023BH   A   
+LCD_DIY_INIT . . . . .  C ADDR   0202H   A   
+LCD_MUSIC. . . . . . .  C ADDR   0217H   A   
+LCD_MUSIC_TEMP . . . .  C ADDR   018CH   A   
+LCD_NAME0. . . . . . .  C ADDR   0226H   A   
+LCD_NAME1. . . . . . .  C ADDR   022EH   A   
+LCD_NAME2. . . . . . .  C ADDR   0236H   A   
+LCD_PLAY . . . . . . .  C ADDR   0150H   A   
+LCD_PLAY_ROW1. . . . .  C ADDR   0150H   A   
+LCD_PLAY_ROW2. . . . .  C ADDR   015AH   A   
+LCD_RECORD . . . . . .  C ADDR   0245H   A   
+LCD_RECORDED_ROW1. . .  C ADDR   0254H   A   
+LCD_RECORDING_R0W1 . .  C ADDR   0245H   A   
+LCD_ROW1 . . . . . . .  C ADDR   021AH   A   
+LCD_ROW2 . . . . . . .  C ADDR   0224H   A   
+LCD_RT . . . . . . . .  C ADDR   02B0H   A   
+LCD_TIME_DP. . . . . .  C ADDR   025EH   A   
+LCD_WRITE. . . . . . .  C ADDR   0283H   A   
+LCD_WRITE_NUM. . . . .  C ADDR   029BH   A   
+MAIN . . . . . . . . .  C ADDR   0100H   A   
+MAIN_LOOP. . . . . . .  C ADDR   0140H   A   
+MODE_0 . . . . . . . .  C ADDR   0457H   A   
+MODF . . . . . . . . .  B ADDR   00F8H.5 A   
+MSTEN. . . . . . . . .  B ADDR   00F8H.1 A   
+MUSIC_0. . . . . . . .  C ADDR   05BFH   A   
+MUSIC_1. . . . . . . .  C ADDR   0624H   A   
+MUSIC_2. . . . . . . .  C ADDR   067FH   A   
+MUSIC_FINSH. . . . . .  B ADDR   0020H.2 A   
+MUSIC_LIST . . . . . .  C ADDR   05BFH   A   
+MUSIC_MODE . . . . . .  B ADDR   0022H.1 A   
+MUSIC_MODE1. . . . . .  C ADDR   0589H   A   
+MUSIC_NAME . . . . . .  C ADDR   0596H   A   
+MUSIC_NAME0. . . . . .  C ADDR   0596H   A   
+MUSIC_NAME1. . . . . .  C ADDR   059EH   A   
+MUSIC_NAME2. . . . . .  C ADDR   05A4H   A   
+MUSIC_PAUSE. . . . . .  C ADDR   035AH   A   
+N0 . . . . . . . . . .  C ADDR   0543H   A   
+N1 . . . . . . . . . .  C ADDR   0547H   A   
+N10. . . . . . . . . .  C ADDR   056BH   A   
+N11. . . . . . . . . .  C ADDR   056FH   A   
+N12. . . . . . . . . .  C ADDR   0573H   A   
+N2 . . . . . . . . . .  C ADDR   054BH   A   
+N3 . . . . . . . . . .  C ADDR   054FH   A   
+N4 . . . . . . . . . .  C ADDR   0553H   A   
+N5 . . . . . . . . . .  C ADDR   0557H   A   
+N6 . . . . . . . . . .  C ADDR   055BH   A   
+N7 . . . . . . . . . .  C ADDR   055FH   A   
+N8 . . . . . . . . . .  C ADDR   0563H   A   
+N9 . . . . . . . . . .  C ADDR   0567H   A   
+NEXT_MUSIC . . . . . .  C ADDR   0487H   A   
+NOTE_H . . . . . . . .  C ADDR   04EAH   A   
+NOTE_L . . . . . . . .  C ADDR   050EH   A   
+NO_INPUT . . . . . . .  C ADDR   0423H   A   
+OSCICN . . . . . . . .  D ADDR   00B2H   A   
+OSCXCN . . . . . . . .  D ADDR   00B1H   A   
+OTHER_FUNCTION . . . .  C ADDR   0468H   A   
+OUT_CHANGE . . . . . .  C ADDR   02BEH   A   
+OV . . . . . . . . . .  B ADDR   00D0H.2 A   
+P. . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    22
 
-PCA0H. . . . . . .  D ADDR   00F9H   A   
-PCA0L. . . . . . .  D ADDR   00E9H   A   
-PCA0MD . . . . . .  D ADDR   00D9H   A   
-PCON . . . . . . .  D ADDR   0087H   A   
-PLAY_MODE. . . . .  B ADDR   0022H.0 A   
-PLAY_SCREEN1 . . .  C ADDR   0465H   A   
-PLAY_SCREEN2 . . .  C ADDR   0476H   A   
-PS . . . . . . . .  B ADDR   00B8H.4 A   
-PSCTL. . . . . . .  D ADDR   008FH   A   
-PSW. . . . . . . .  D ADDR   00D0H   A   
-PT0. . . . . . . .  B ADDR   00B8H.1 A   
-PT1. . . . . . . .  B ADDR   00B8H.3 A   
-PT2. . . . . . . .  B ADDR   00B8H.5 A   
-PWM_T0 . . . . . .  N NUMB   0033H   A   
-PX0. . . . . . . .  B ADDR   00B8H.0 A   
-PX1. . . . . . . .  B ADDR   00B8H.2 A   
-RB8. . . . . . . .  B ADDR   0098H.2 A   
-RCAP2H . . . . . .  D ADDR   00CBH   A   
-RCAP2L . . . . . .  D ADDR   00CAH   A   
-RCAP4H . . . . . .  D ADDR   00E5H   A   
-RCAP4L . . . . . .  D ADDR   00E4H   A   
-RCD_PLAY . . . . .  C ADDR   02C2H   A   
-RCD_SAVE_H . . . .  N NUMB   0000H   A   
-RCD_SAVE_L . . . .  N NUMB   0000H   A   
-RCLK . . . . . . .  B ADDR   00C8H.5 A   
-READ_DATA. . . . .  C ADDR   01CFH   A   
-READ_NUM . . . . .  C ADDR   01E6H   A   
-RECORDED . . . . .  C ADDR   02BBH   A   
-RECORDED_PLAY. . .  B ADDR   0020H.7 A   
-RECORDING. . . . .  C ADDR   02A9H   A   
-RECORD_KEY . . . .  C ADDR   039DH   A   
-RECORD_MODE. . . .  B ADDR   0022H.2 A   
-RECORD_SCREEN1 . .  C ADDR   04A0H   A   
-RECORD_SCREEN2 . .  C ADDR   04ADH   A   
-RECORING_SIG . . .  B ADDR   0020H.3 A   
-REF0CN . . . . . .  D ADDR   00D1H   A   
-REN. . . . . . . .  B ADDR   0098H.4 A   
-RESET_SOURCES_INIT  C ADDR   03EEH   A   
-RI . . . . . . . .  B ADDR   0098H.0 A   
-RS . . . . . . . .  B ADDR   00A0H.3 A   
-RS0. . . . . . . .  B ADDR   00D0H.3 A   
-RS1. . . . . . . .  B ADDR   00D0H.4 A   
-RSTSRC . . . . . .  D ADDR   00EFH   A   
-RW . . . . . . . .  B ADDR   00A0H.4 A   
-RXOVRN . . . . . .  B ADDR   00F8H.4 A   
-SADDR0 . . . . . .  D ADDR   00A9H   A   
-SADDR1 . . . . . .  D ADDR   00F3H   A   
-SADEN0 . . . . . .  D ADDR   00B9H   A   
-SADEN1 . . . . . .  D ADDR   00AEH   A   
-SBUF0. . . . . . .  D ADDR   0099H   A   
-SBUF1. . . . . . .  D ADDR   00F2H   A   
-SCAN_START . . . .  C ADDR   0305H   A   
-SCON0. . . . . . .  D ADDR   0098H   A   
-SCON1. . . . . . .  D ADDR   00F1H   A   
-SELECTED_MUSIC . .  C ADDR   027FH   A   
-SET_BEATS. . . . .  C ADDR   0249H   A   
-SET_BEATS_0. . . .  C ADDR   0237H   A   
-SET_BEATS_1. . . .  C ADDR   0242H   A   
-SI . . . . . . . .  B ADDR   00C0H.3 A   
-SKIP_2X. . . . . .  C ADDR   03B0H   A   
-SKIP_2X_FLAG . . .  B ADDR   0020H.6 A   
-SLVSEL . . . . . .  B ADDR   00F8H.2 A   
-SM0. . . . . . . .  B ADDR   0098H.7 A   
-SM1. . . . . . . .  B ADDR   0098H.6 A   
-SM2. . . . . . . .  B ADDR   0098H.5 A   
-SMB0ADR. . . . . .  D ADDR   00C3H   A   
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    20
+P0MDOUT. . . . . . . .  D ADDR   00A4H   A   
+P1 . . . . . . . . . .  D ADDR   0090H   A   
+P1MDIN . . . . . . . .  D ADDR   00BDH   A   
+P1MDOUT. . . . . . . .  D ADDR   00A5H   A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+P2MDOUT. . . . . . . .  D ADDR   00A6H   A   
+P3 . . . . . . . . . .  D ADDR   00B0H   A   
+P3IF . . . . . . . . .  D ADDR   00ADH   A   
+P3MDOUT. . . . . . . .  D ADDR   00A7H   A   
+P4 . . . . . . . . . .  D ADDR   0084H   A   
+P5 . . . . . . . . . .  D ADDR   0085H   A   
+P6 . . . . . . . . . .  D ADDR   0086H   A   
+P7 . . . . . . . . . .  D ADDR   0096H   A   
+P74OUT . . . . . . . .  D ADDR   00B5H   A   
+PAINO_MODE . . . . . .  N NUMB   0022H   A   
+PAUSE. . . . . . . . .  C ADDR   04AEH   A   
+PAUSE_FLAG . . . . . .  B ADDR   0020H.1 A   
+PCA0CN . . . . . . . .  D ADDR   00D8H   A   
+PCA0CPH0 . . . . . . .  D ADDR   00FAH   A   
+PCA0CPH1 . . . . . . .  D ADDR   00FBH   A   
+PCA0CPH2 . . . . . . .  D ADDR   00FCH   A   
+PCA0CPH3 . . . . . . .  D ADDR   00FDH   A   
+PCA0CPH4 . . . . . . .  D ADDR   00FEH   A   
+PCA0CPL0 . . . . . . .  D ADDR   00EAH   A   
+PCA0CPL1 . . . . . . .  D ADDR   00EBH   A   
+PCA0CPL2 . . . . . . .  D ADDR   00ECH   A   
+PCA0CPL3 . . . . . . .  D ADDR   00EDH   A   
+PCA0CPL4 . . . . . . .  D ADDR   00EEH   A   
+PCA0CPM0 . . . . . . .  D ADDR   00DAH   A   
+PCA0CPM1 . . . . . . .  D ADDR   00DBH   A   
+PCA0CPM2 . . . . . . .  D ADDR   00DCH   A   
+PCA0CPM3 . . . . . . .  D ADDR   00DDH   A   
+PCA0CPM4 . . . . . . .  D ADDR   00DEH   A   
+PCA0H. . . . . . . . .  D ADDR   00F9H   A   
+PCA0L. . . . . . . . .  D ADDR   00E9H   A   
+PCA0MD . . . . . . . .  D ADDR   00D9H   A   
+PCON . . . . . . . . .  D ADDR   0087H   A   
+PLAYER_1X. . . . . . .  C ADDR   0331H   A   
+PLAY_BEATS . . . . . .  C ADDR   0543H   A   
+PLAY_MODE. . . . . . .  B ADDR   0022H.0 A   
+PLAY_SCREEN1 . . . . .  C ADDR   0532H   A   
+PLAY_SCREEN2 . . . . .  C ADDR   053CH   A   
+PS . . . . . . . . . .  B ADDR   00B8H.4 A   
+PSCTL. . . . . . . . .  D ADDR   008FH   A   
+PSW. . . . . . . . . .  D ADDR   00D0H   A   
+PT0. . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1. . . . . . . . . .  B ADDR   00B8H.3 A   
+PT2. . . . . . . . . .  B ADDR   00B8H.5 A   
+PWM_T0 . . . . . . . .  N NUMB   0033H   A   
+PX0. . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1. . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8. . . . . . . . . .  B ADDR   0098H.2 A   
+RCAP2H . . . . . . . .  D ADDR   00CBH   A   
+RCAP2L . . . . . . . .  D ADDR   00CAH   A   
+RCAP4H . . . . . . . .  D ADDR   00E5H   A   
+RCAP4L . . . . . . . .  D ADDR   00E4H   A   
+RCD_PLAY . . . . . . .  C ADDR   037AH   A   
+RCD_SAVE_H . . . . . .  N NUMB   0000H   A   
+RCD_SAVE_L . . . . . .  N NUMB   0000H   A   
+RCLK . . . . . . . . .  B ADDR   00C8H.5 A   
+READ_DATA. . . . . . .  C ADDR   0285H   A   
+READ_NUM . . . . . . .  C ADDR   029CH   A   
+RECORDED . . . . . . .  C ADDR   0373H   A   
+RECORDED_PLAY. . . . .  B ADDR   0020H.7 A   
+RECORDING. . . . . . .  C ADDR   0361H   A   
+RECORD_KEY . . . . . .  C ADDR   046AH   A   
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    23
 
-SMB0CN . . . . . .  D ADDR   00C0H   A   
-SMB0CR . . . . . .  D ADDR   00CFH   A   
-SMB0DAT. . . . . .  D ADDR   00C2H   A   
-SMB0STA. . . . . .  D ADDR   00C1H   A   
-SMBFTE . . . . . .  B ADDR   00C0H.1 A   
-SMBTOE . . . . . .  B ADDR   00C0H.0 A   
-SONG0. . . . . . .  C ADDR   0264H   A   
-SONG1. . . . . . .  C ADDR   0270H   A   
-SONG2. . . . . . .  C ADDR   027CH   A   
-SONG_ORDER . . . .  N NUMB   0037H   A   
-SP . . . . . . . .  D ADDR   0081H   A   
-SPI0CFG. . . . . .  D ADDR   009AH   A   
-SPI0CKR. . . . . .  D ADDR   009DH   A   
-SPI0CN . . . . . .  D ADDR   00F8H   A   
-SPI0DAT. . . . . .  D ADDR   009BH   A   
-SPIEN. . . . . . .  B ADDR   00F8H.0 A   
-SPIF . . . . . . .  B ADDR   00F8H.7 A   
-STA. . . . . . . .  B ADDR   00C0H.5 A   
-STO. . . . . . . .  B ADDR   00C0H.4 A   
-SWITCH_CLR . . . .  C ADDR   0391H   A   
-T0_PROC. . . . . .  C ADDR   01FBH   A   
-T0_RETI. . . . . .  C ADDR   020AH   A   
-T1_DELAY1. . . . .  C ADDR   0220H   A   
-T1_PROC. . . . . .  C ADDR   020DH   A   
-T1_RETI. . . . . .  C ADDR   02F8H   A   
-T1_SB_MUSIC_MODE .  C ADDR   025AH   A   
-T1_SB_PLAY_MODE. .  C ADDR   0234H   A   
-T1_SB_RECORD_MODE.  C ADDR   02A6H   A   
-T1_SET_BEATS . . .  C ADDR   0229H   A   
-T1_TIME_COUNT. . .  C ADDR   02D8H   A   
-T2CON. . . . . . .  D ADDR   00C8H   A   
-T4CON. . . . . . .  D ADDR   00C9H   A   
-TB8. . . . . . . .  B ADDR   0098H.3 A   
-TCLK . . . . . . .  B ADDR   00C8H.4 A   
-TCON . . . . . . .  D ADDR   0088H   A   
-TEMP_TO_RETI . . .  C ADDR   0258H   A   
-TF0. . . . . . . .  B ADDR   0088H.5 A   
-TF1. . . . . . . .  B ADDR   0088H.7 A   
-TF2. . . . . . . .  B ADDR   00C8H.7 A   
-TH0. . . . . . . .  D ADDR   008CH   A   
-TH1. . . . . . . .  D ADDR   008DH   A   
-TH2. . . . . . . .  D ADDR   00CDH   A   
-TH4. . . . . . . .  D ADDR   00F5H   A   
-TI . . . . . . . .  B ADDR   0098H.1 A   
-TIMER_INIT . . . .  C ADDR   03F5H   A   
-TIME_H . . . . . .  N NUMB   0035H   A   
-TIME_L . . . . . .  N NUMB   0036H   A   
-TL0. . . . . . . .  D ADDR   008AH   A   
-TL1. . . . . . . .  D ADDR   008BH   A   
-TL2. . . . . . . .  D ADDR   00CCH   A   
-TL4. . . . . . . .  D ADDR   00F4H   A   
-TMOD . . . . . . .  D ADDR   0089H   A   
-TMR3CN . . . . . .  D ADDR   0091H   A   
-TMR3H. . . . . . .  D ADDR   0095H   A   
-TMR3L. . . . . . .  D ADDR   0094H   A   
-TMR3RLH. . . . . .  D ADDR   0093H   A   
-TMR3RLL. . . . . .  D ADDR   0092H   A   
-TR0. . . . . . . .  B ADDR   0088H.4 A   
-TR1. . . . . . . .  B ADDR   0088H.6 A   
-TR2. . . . . . . .  B ADDR   00C8H.2 A   
-TT_C . . . . . . .  C ADDR   02DEH   A   
-TT_RCD_JUDGE . . .  C ADDR   02D0H   A   
-TXBSY. . . . . . .  B ADDR   00F8H.3 A   
-WCOL . . . . . . .  B ADDR   00F8H.6 A   
-WDTCN. . . . . . .  D ADDR   00FFH   A   
-WRITE_IN . . . . .  C ADDR   01D8H   A   
-A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 00:15:25 PAGE    21
+RECORD_MODE. . . . . .  B ADDR   0022H.2 A   
+RECORD_SCREEN1 . . . .  C ADDR   05AAH   A   
+RECORD_SCREEN2 . . . .  C ADDR   05B7H   A   
+RECORING_SIG . . . . .  B ADDR   0020H.3 A   
+REF0CN . . . . . . . .  D ADDR   00D1H   A   
+REN. . . . . . . . . .  B ADDR   0098H.4 A   
+RESET_SOURCES_INIT . .  C ADDR   04BBH   A   
+RI . . . . . . . . . .  B ADDR   0098H.0 A   
+RS . . . . . . . . . .  B ADDR   00A0H.3 A   
+RS0. . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1. . . . . . . . . .  B ADDR   00D0H.4 A   
+RSTSRC . . . . . . . .  D ADDR   00EFH   A   
+RW . . . . . . . . . .  B ADDR   00A0H.4 A   
+RXOVRN . . . . . . . .  B ADDR   00F8H.4 A   
+SADDR0 . . . . . . . .  D ADDR   00A9H   A   
+SADDR1 . . . . . . . .  D ADDR   00F3H   A   
+SADEN0 . . . . . . . .  D ADDR   00B9H   A   
+SADEN1 . . . . . . . .  D ADDR   00AEH   A   
+SBUF0. . . . . . . . .  D ADDR   0099H   A   
+SBUF1. . . . . . . . .  D ADDR   00F2H   A   
+SCAN_START . . . . . .  C ADDR   03D2H   A   
+SCON0. . . . . . . . .  D ADDR   0098H   A   
+SCON1. . . . . . . . .  D ADDR   00F1H   A   
+SELECTED_MUSIC . . . .  C ADDR   0337H   A   
+SET_BEATS. . . . . . .  C ADDR   02FFH   A   
+SET_BEATS_0. . . . . .  C ADDR   02EDH   A   
+SET_BEATS_1. . . . . .  C ADDR   02F8H   A   
+SHENG. . . . . . . . .  C ADDR   0580H   A   
+SHENG_DISPLAY. . . . .  C ADDR   0181H   A   
+SI . . . . . . . . . .  B ADDR   00C0H.3 A   
+SKIP_2X. . . . . . . .  C ADDR   047DH   A   
+SKIP_2X_FLAG . . . . .  B ADDR   0020H.6 A   
+SLVSEL . . . . . . . .  B ADDR   00F8H.2 A   
+SM0. . . . . . . . . .  B ADDR   0098H.7 A   
+SM1. . . . . . . . . .  B ADDR   0098H.6 A   
+SM2. . . . . . . . . .  B ADDR   0098H.5 A   
+SMB0ADR. . . . . . . .  D ADDR   00C3H   A   
+SMB0CN . . . . . . . .  D ADDR   00C0H   A   
+SMB0CR . . . . . . . .  D ADDR   00CFH   A   
+SMB0DAT. . . . . . . .  D ADDR   00C2H   A   
+SMB0STA. . . . . . . .  D ADDR   00C1H   A   
+SMBFTE . . . . . . . .  B ADDR   00C0H.1 A   
+SMBTOE . . . . . . . .  B ADDR   00C0H.0 A   
+SONG0. . . . . . . . .  C ADDR   031CH   A   
+SONG1. . . . . . . . .  C ADDR   0324H   A   
+SONG2. . . . . . . . .  C ADDR   032CH   A   
+SONG_ORDER . . . . . .  N NUMB   0037H   A   
+SP . . . . . . . . . .  D ADDR   0081H   A   
+SPI0CFG. . . . . . . .  D ADDR   009AH   A   
+SPI0CKR. . . . . . . .  D ADDR   009DH   A   
+SPI0CN . . . . . . . .  D ADDR   00F8H   A   
+SPI0DAT. . . . . . . .  D ADDR   009BH   A   
+SPIEN. . . . . . . . .  B ADDR   00F8H.0 A   
+SPIF . . . . . . . . .  B ADDR   00F8H.7 A   
+STA. . . . . . . . . .  B ADDR   00C0H.5 A   
+STO. . . . . . . . . .  B ADDR   00C0H.4 A   
+SWITCH_CLR . . . . . .  C ADDR   045EH   A   
+T0_PROC. . . . . . . .  C ADDR   02B1H   A   
+T0_RETI. . . . . . . .  C ADDR   02C0H   A   
+T1_DELAY1. . . . . . .  C ADDR   02D6H   A   
+T1_PROC. . . . . . . .  C ADDR   02C3H   A   
+T1_RETI. . . . . . . .  C ADDR   03C5H   A   
+T1_SB_MUSIC_MODE . . .  C ADDR   0312H   A   
+T1_SB_PLAY_MODE. . . .  C ADDR   02EAH   A   
+T1_SB_RECORD_MODE. . .  C ADDR   035EH   A   
+T1_SB_RECORD_MODE_TEMP  C ADDR   0310H   A   
+A51 MACRO ASSEMBLER  PAINO_ADV                                                            11/23/2023 16:23:54 PAGE    24
 
-XBR0 . . . . . . .  D ADDR   00E1H   A   
-XBR1 . . . . . . .  D ADDR   00E2H   A   
-XBR2 . . . . . . .  D ADDR   00E3H   A   
+T1_SET_BEATS . . . . .  C ADDR   02DFH   A   
+T1_TIME_COUNT. . . . .  C ADDR   0390H   A   
+T2CON. . . . . . . . .  D ADDR   00C8H   A   
+T4CON. . . . . . . . .  D ADDR   00C9H   A   
+TB8. . . . . . . . . .  B ADDR   0098H.3 A   
+TCLK . . . . . . . . .  B ADDR   00C8H.4 A   
+TCON . . . . . . . . .  D ADDR   0088H   A   
+TEMP_TO_RETI . . . . .  C ADDR   030EH   A   
+TF0. . . . . . . . . .  B ADDR   0088H.5 A   
+TF1. . . . . . . . . .  B ADDR   0088H.7 A   
+TF2. . . . . . . . . .  B ADDR   00C8H.7 A   
+TH0. . . . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . . . .  D ADDR   008DH   A   
+TH2. . . . . . . . . .  D ADDR   00CDH   A   
+TH4. . . . . . . . . .  D ADDR   00F5H   A   
+TI . . . . . . . . . .  B ADDR   0098H.1 A   
+TIMER_INIT . . . . . .  C ADDR   04C2H   A   
+TIME_H . . . . . . . .  N NUMB   0035H   A   
+TIME_L . . . . . . . .  N NUMB   0036H   A   
+TL0. . . . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . . . .  D ADDR   008BH   A   
+TL2. . . . . . . . . .  D ADDR   00CCH   A   
+TL4. . . . . . . . . .  D ADDR   00F4H   A   
+TMOD . . . . . . . . .  D ADDR   0089H   A   
+TMR3CN . . . . . . . .  D ADDR   0091H   A   
+TMR3H. . . . . . . . .  D ADDR   0095H   A   
+TMR3L. . . . . . . . .  D ADDR   0094H   A   
+TMR3RLH. . . . . . . .  D ADDR   0093H   A   
+TMR3RLL. . . . . . . .  D ADDR   0092H   A   
+TR0. . . . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . . . .  B ADDR   0088H.6 A   
+TR2. . . . . . . . . .  B ADDR   00C8H.2 A   
+TT_C . . . . . . . . .  C ADDR   0399H   A   
+TT_C_2X. . . . . . . .  C ADDR   03ABH   A   
+TT_RCD_JUDGE . . . . .  C ADDR   0388H   A   
+TXBSY. . . . . . . . .  B ADDR   00F8H.3 A   
+WCOL . . . . . . . . .  B ADDR   00F8H.6 A   
+WDTCN. . . . . . . . .  D ADDR   00FFH   A   
+WRITE_IN . . . . . . .  C ADDR   028EH   A   
+XBR0 . . . . . . . . .  D ADDR   00E1H   A   
+XBR1 . . . . . . . . .  D ADDR   00E2H   A   
+XBR2 . . . . . . . . .  D ADDR   00E3H   A   
 
 
 REGISTER BANK(S) USED: 0 
